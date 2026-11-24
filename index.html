@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>NexDR — เครื่องมือเช็คราคา DR | By. NakinMuni</title>
+<title>NexDR V8.7 — เครื่องมือเช็คราคา DR | By. NakinMuni</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -58,9 +58,12 @@
       <a href="#guide" class="mt-2 inline-block text-xs text-emerald-400 underline">อ่านคู่มือฉบับเข้าใจง่าย →</a>
     </div>
     <div><h2 class="text-xl font-bold">🌍 ภาพรวมตลาดโลก</h2><p id="hMkt" class="mt-1 text-xs text-slate-400"></p></div>
-    <div id="mkGrid" class="grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-5"><p class="col-span-full py-4 text-sm text-slate-400">กำลังโหลดตัวชี้วัด...</p></div>
+    <div id="mkGrid" class="grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-4"><p class="col-span-full py-4 text-sm text-slate-400">กำลังโหลดตัวชี้วัด...</p></div>
     <div id="mkDetail" class="hidden rounded-2xl border border-slate-700 bg-slate-900/70 p-4 text-sm leading-relaxed"></div>
     <p id="mkNote" class="text-[11px] leading-relaxed text-slate-500"></p>
+    <div class="space-y-2 pt-1"><h3 class="font-bold">📈 ดัชนีตลาดหุ้นโลก</h3>
+      <div id="idxGrid" class="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5"><p class="col-span-full py-4 text-sm text-slate-400">กำลังโหลดดัชนี...</p></div>
+      <p id="idxNote" class="text-[11px] leading-relaxed text-slate-500"></p></div>
     <div class="space-y-2">
       <div class="flex flex-wrap items-center justify-between gap-2"><h3 class="font-bold">📰 ข่าวตลาดวันนี้</h3>
         <div class="flex gap-1.5"><button class="chip on" data-ntab="th" onclick="setNews('th')">ตลาดหุ้นไทย</button><button class="chip" data-ntab="world" onclick="setNews('world')">ตลาดโลก</button></div></div>
@@ -146,7 +149,7 @@
     <details class="rounded-xl border border-slate-800 bg-slate-900/60 p-4"><summary class="font-bold text-white">5. ทำไมราคาไม่ได้อัปเดตตลอดเวลา?</summary>
       <p class="mt-2">กระดานทั้งตลาดอัปเดตอัตโนมัติวันละ 2 รอบ เพื่อไม่ให้เกินโควตาฟรีของ Google ส่วนหุ้นที่ติดดาวกดอัปเดตสดได้เอง (ถ้ามีคนกดซ้ำภายใน 5 นาที ระบบจะใช้ราคาเดิม) ดูเวลาอัปเดตล่าสุดมุมขวาบนเสมอ</p></details>
     <details class="rounded-xl border border-slate-800 bg-slate-900/60 p-4"><summary class="font-bold text-white">6. เวลาเปิด-ปิดตลาด (เวลาไทย)</summary>
-      <ul class="mt-2 space-y-1 text-[13px]"><li>🇹🇭 SET (DR): 10:00–12:30, 14:00–16:30, 19:00–02:45 (Dime! Happy Hour ค่าคอมฯ 0% วันพุธ 15:00–16:00)</li><li>🇭🇰🇨🇳 ฮ่องกง/จีน: ~08:30–15:00 • 🇯🇵 ญี่ปุ่น: ~07:00–13:30</li><li>🇪🇺 ยุโรป: ~14:00/15:00–22:30/23:30 • 🇺🇸 สหรัฐฯ: ~20:30/21:30–03:00/04:00</li></ul>
+      <ul class="mt-2 space-y-1 text-[13px]"><li>🇹🇭 SET (DR): รอบกลางวัน 08:00–16:30 (DR ทุกตัว เริ่มตั้งแต่ 16 พ.ย. 2569) • รอบกลางคืน 19:00–02:45 (เฉพาะ DR อ้างอิงยุโรป/สหรัฐฯ) (Dime! Happy Hour ค่าคอมฯ 0% วันพุธ 15:00–16:00)</li><li>🇭🇰🇨🇳 ฮ่องกง/จีน: ~08:30–15:00 • 🇯🇵 ญี่ปุ่น: ~07:00–13:30</li><li>🇪🇺 ยุโรป: ~14:00/15:00–22:30/23:30 • 🇺🇸 สหรัฐฯ: ~20:30/21:30–03:00/04:00</li><li class="text-slate-500">เวลาของตลาดอื่นเป็นค่าโดยประมาณตามเวลาไทย เปลี่ยนตามฤดูกาลและวันหยุดตลาด</li></ul>
       <p id="mkt" class="mt-2 text-xs text-slate-400"></p></details>
     <details class="rounded-xl border border-slate-800 bg-slate-900/60 p-4"><summary class="font-bold text-white">7. สำรอง / กู้คืนข้อมูลของฉัน</summary>
       <p class="mt-2">ดาว เป้าหมาย และโน้ตเก็บในเบราว์เซอร์เครื่องนี้เท่านั้น ถ้าจะย้ายเครื่องหรือล้างแคช ให้สำรองไว้ก่อน</p>
@@ -158,7 +161,7 @@
       <input id="gq" oninput="renderGloss()" class="inp" placeholder="🔍 ค้นหาคำศัพท์ เช่น ปันผล, DCA, P/E" />
       <div id="gloss" class="space-y-2"></div>
     </div>
-    <p class="pt-4 text-center text-xs text-slate-500">NexDR • Designed & Engineered By. NakinMuni</p>
+    <p class="pt-4 text-center text-xs text-slate-500">NexDR V8.7 • Designed & Engineered By. NakinMuni</p>
   </section>
 </main>
 
@@ -341,9 +344,12 @@ function saveMeta(){
 function bkk(){const p={};new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Bangkok',weekday:'short',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(new Date()).forEach(x=>p[x.type]=x.value);return{wd:p.weekday,m:(+p.hour%24)*60+ +p.minute}}
 function happyNow(){const t=bkk();return t.wd==='Wed'&&t.m>=900&&t.m<960}
 function marketNow(){
-  const t=bkk(),we=t.wd==='Sat'||t.wd==='Sun',m=t.m;
-  const open=!we&&((m>=600&&m<=750)||(m>=840&&m<=990)||m>=1140||m<=165);
-  return `ตอนนี้กระดาน SET DR: ${open?'🟢 เปิดซื้อขาย':'⏸️ ปิดหรือพักการซื้อขาย'}${happyNow()?' • 🎉 Happy Hour ค่าคอมฯ 0% กำลังเปิดอยู่':''}`;
+  // เวลาซื้อขาย DR บน SET (มีผลตั้งแต่ 16 พ.ย. 2569): กลางวัน 08:00-16:30 (DR ทุกตัว) / กลางคืน 19:00-02:45 (เฉพาะ DR อ้างอิงยุโรป-สหรัฐฯ)
+  // ยังไม่รวมวันหยุดทำการของตลาด
+  const t=bkk(),d={Sun:0,Mon:1,Tue:2,Wed:3,Thu:4,Fri:5,Sat:6}[t.wd],m=t.m,wk=x=>x>=1&&x<=5;
+  const day=wk(d)&&m>=480&&m<=990;
+  const night=(wk(d)&&m>=1140)||(wk((d+6)%7)&&m<=165); // หลังเที่ยงคืนนับเป็นรอบกลางคืนของวันทำการก่อนหน้า
+  return `ตอนนี้กระดาน SET DR: ${day?'🟢 เปิดซื้อขาย (รอบกลางวัน)':night?'🟢 เปิดซื้อขาย (รอบกลางคืน เฉพาะ DR อ้างอิงยุโรป/สหรัฐฯ)':'⏸️ ปิดหรือพักการซื้อขาย'}${happyNow()?' • 🎉 Happy Hour ค่าคอมฯ 0% กำลังเปิดอยู่':''}`;
 }
 
 // ---------- สำรอง/กู้คืน ----------
@@ -567,6 +573,8 @@ const MK={
  gold:{n:'ทองโลก',ic:'🥇',f:v=>'$'+nf(v,0),x:'ราคาทองคำล่วงหน้าในตลาดโลก หน่วยดอลลาร์ต่อออนซ์ ไม่ใช่ราคาทองแท่งบาทละของไทย มักถูกมองเป็นสินทรัพย์ปลอดภัยเมื่อตลาดกังวล'},
  oil:{n:'น้ำมัน WTI',ic:'🛢️',f:v=>'$'+nf(v,2),x:'ราคาน้ำมันดิบ WTI ล่วงหน้า หน่วยดอลลาร์ต่อบาร์เรล เป็นต้นทุนของหลายธุรกิจและขยับตามข่าวอุปทาน เศรษฐกิจ และภูมิรัฐศาสตร์ (บางช่วงตัวเลขกระโดดตอนสลับสัญญา)'},
  btc:{n:'Bitcoin',ic:'₿',f:v=>'$'+nf(v,0),x:'ราคา Bitcoin เป็นดอลลาร์ ซื้อขายตลอด 24 ชั่วโมง ผันผวนสูงกว่าหุ้นทั่วไปมาก มักถูกใช้เป็นมาตรวัดความกล้าเสี่ยงของตลาด'},
+ dxy:{n:'ดัชนีดอลลาร์',ic:'💵',f:v=>nf(v,2),x:'DXY วัดค่าเงินดอลลาร์สหรัฐเทียบกับสกุลเงินหลัก (ยูโร เยน ปอนด์ ฯลฯ) ตัวเลขสูงขึ้น = ดอลลาร์แข็งขึ้น มีผลต่อทอง สินทรัพย์เสี่ยง และค่าเงินบาท'},
+ tnx:{n:'พันธบัตรสหรัฐฯ 10 ปี',ic:'🏛️',f:v=>nf(v,2)+'%',x:'ผลตอบแทน (ดอกเบี้ย) ต่อปีของพันธบัตรรัฐบาลสหรัฐฯ อายุ 10 ปี เป็นอัตราอ้างอิงของต้นทุนเงินทั่วโลก 1 bp = 0.01% ผลตอบแทนขึ้นเร็วมักกดดันราคาหุ้นกลุ่มเติบโต'},
  usdthb:{n:'USD/THB',ic:'💱',f:v=>nf(v,2)+' ฿',x:'ค่าเงินดอลลาร์เป็นบาท ตัวเลขสูงขึ้น = บาทอ่อน ราคา DR คำนวณจาก หุ้นแม่ × ค่าเงิน ÷ Ratio ค่าเงินจึงมีผลต่อ Fair Value โดยตรง'}
 };
 const LV=[['🟢 ปกติ','text-emerald-400'],['🟡 เฝ้าระวัง','text-amber-300'],['🔴 ผันผวนสูง','text-rose-400']];
@@ -586,17 +594,20 @@ function vixLadder(l,cfg){
 }
 function mkLevel(id,v,c,cfg){
   if(id==='vix'){let l=vixZ(cfg).filter(t=>v>=t).length;if(c>=cfg.vix_spike_pct)l=Math.max(l,1);return l}
+  if(id==='tnx'){const bp=Math.abs((v-v/(1+c/100))*100),m=cfg.tnx_move_bp||10;return bp>=2*m?2:bp>=m?1:0}
   const m=cfg[id+'_move_pct']||3,a=Math.abs(c);return a>=2*m?2:a>=m?1:0;
 }
 function mkNote(id,v,c,l,cfg){
-  const s=(c>=0?'+':'')+c.toFixed(2)+'%',up=c>0;
+  const s=(c>=0?'+':'')+c.toFixed(2)+'%',up=c>0,bp=id==='tnx'?(v-v/(1+c/100))*100:0,bs=(bp>=0?'+':'')+bp.toFixed(1)+'bp';
   if(id==='vix')return (c>=cfg.vix_spike_pct?`VIX พุ่ง ${s} ในวันเดียว • `:'')+VZ[l].t;
-  if(l===0)return {gold:'เคลื่อนไหวในกรอบปกติ',oil:'เคลื่อนไหวในกรอบปกติ',btc:'ซื้อขาย 24 ชม. ผันผวนสูงกว่าหุ้นทั่วไปเสมอ',usdthb:'ค่าเงินมีผลต่อ Fair Value ของ DR โดยตรง'}[id];
+  if(l===0)return {gold:'เคลื่อนไหวในกรอบปกติ',oil:'เคลื่อนไหวในกรอบปกติ',btc:'ซื้อขาย 24 ชม. ผันผวนสูงกว่าหุ้นทั่วไปเสมอ',usdthb:'ค่าเงินมีผลต่อ Fair Value ของ DR โดยตรง',dxy:'ดอลลาร์เคลื่อนไหวในกรอบปกติ ค่าเงินดอลลาร์มีผลต่อทอง สินทรัพย์เสี่ยง และค่าเงินบาท',tnx:'ผลตอบแทนพันธบัตรเป็นอัตราอ้างอิงของต้นทุนเงินทั่วโลก ยังเคลื่อนไหวในกรอบปกติ'}[id];
   return {
    gold:up?`ทอง ${s} ในวันเดียว มักเกิดเมื่อตลาดกังวลความเสี่ยงหรือดอลลาร์อ่อน (แนวโน้มทั่วไป ไม่ใช่กฎตายตัว)`:`ทอง ${s} มักสัมพันธ์กับดอลลาร์แข็งหรือดอกเบี้ยสูงขึ้น (แนวโน้มทั่วไป ไม่ใช่กฎตายตัว)`,
    oil:up?`น้ำมัน ${s} กระทบต้นทุนหลายธุรกิจและหุ้นกลุ่มพลังงาน มักสะท้อนข่าวอุปทานหรือภูมิรัฐศาสตร์`:`น้ำมัน ${s} อาจสะท้อนความกังวลเรื่องเศรษฐกิจชะลอหรืออุปทานล้นตลาด`,
    btc:`Bitcoin ${s} ในวันเดียว คริปโตแกว่งแรงได้ทั้งขึ้นและลง ควรลงทุนเท่าที่รับความเสี่ยงได้`,
-   usdthb:up?`บาทอ่อนลง ${s} ถ้าราคาหุ้นแม่คงที่ DR ที่อิงหุ้นต่างประเทศมักมีราคาเป็นบาทสูงขึ้น`:`บาทแข็งขึ้น ${s} ถ้าราคาหุ้นแม่คงที่ DR ที่อิงหุ้นต่างประเทศมักมีราคาเป็นบาทต่ำลง`}[id];
+   usdthb:up?`บาทอ่อนลง ${s} ถ้าราคาหุ้นแม่คงที่ DR ที่อิงหุ้นต่างประเทศมักมีราคาเป็นบาทสูงขึ้น`:`บาทแข็งขึ้น ${s} ถ้าราคาหุ้นแม่คงที่ DR ที่อิงหุ้นต่างประเทศมักมีราคาเป็นบาทต่ำลง`,
+   dxy:up?`ดอลลาร์แข็งขึ้น ${s} มักสัมพันธ์กับค่าเงินสกุลอื่นรวมถึงบาทที่อ่อนลง และกดดันราคาทอง (แนวโน้มทั่วไป ไม่ใช่กฎตายตัว)`:`ดอลลาร์อ่อนลง ${s} มักหนุนราคาทองและทำให้สกุลเงินอื่นแข็งขึ้น (แนวโน้มทั่วไป ไม่ใช่กฎตายตัว)`,
+   tnx:up?`ผลตอบแทนพันธบัตรขึ้น ${bs} ในวันเดียว ต้นทุนเงินสูงขึ้น มักกดดันหุ้นกลุ่มเติบโตและเทคโนโลยี (แนวโน้มทั่วไป)`:`ผลตอบแทนพันธบัตรลง ${bs} มักสะท้อนความคาดหวังดอกเบี้ยที่ลดลงหรือเงินไหลเข้าสินทรัพย์ปลอดภัย (แนวโน้มทั่วไป)`}[id];
 }
 function spark(S,up){
   if(S.length<2)return '';const mn=Math.min(...S),mx=Math.max(...S),r=(mx-mn)||1,W=80,H=24;
@@ -607,7 +618,7 @@ function mkView(it){const m=MK[it.id];if(!m)return null;const cfg=mkData.cfg||{}
 function renderMarkets(){
   if(!mkData)return;
   $('mkGrid').innerHTML=mkData.items.map(it=>{const v=mkView(it);if(!v)return '';const up=it.chgPct>=0;
-   return `<button onclick="mkOpen('${it.id}')" class="rounded-2xl border ${it.id===mkSel?'border-emerald-400':'border-slate-800'} bg-slate-900/70 p-3 text-left transition active:scale-[.98]"><div class="flex items-center justify-between text-xs text-slate-400"><span>${v.m.ic} ${v.m.n}</span><span class="${v.lv[1]}">${v.lv[0]}</span></div><p class="mt-1 text-lg font-bold num">${v.m.f(it.price)}</p><p class="text-xs font-semibold num ${up?'text-emerald-400':'text-rose-400'}">${up?'+':''}${it.chgPct.toFixed(2)}%</p>${spark(it.series||[],up)}<p class="mt-1 line-clamp-2 text-[11px] leading-snug text-slate-400">${v.note}</p></button>`}).join('');
+   return `<button onclick="mkOpen('${it.id}')" class="rounded-2xl border ${it.id===mkSel?'border-emerald-400':'border-slate-800'} bg-slate-900/70 p-3 text-left transition active:scale-[.98]"><div class="flex items-center justify-between text-xs text-slate-400"><span>${v.m.ic} ${v.m.n}</span><span class="${v.lv[1]}">${v.lv[0]}</span></div><p class="mt-1 text-lg font-bold num">${v.m.f(it.price)}</p><p class="text-xs font-semibold num ${up?'text-emerald-400':'text-rose-400'}">${chgTxt(it)}</p>${spark(it.series||[],up)}<p class="mt-1 line-clamp-2 text-[11px] leading-snug text-slate-400">${v.note}</p></button>`}).join('');
   $('mkNote').textContent=`🕒 ดึงเมื่อ ${fmtT(mkData.fetchedMs)}${mkData.stale?' (ดึงใหม่ไม่สำเร็จ ใช้ข้อมูลล่าสุดที่เก็บไว้)':''} • อัปเดตทุกราว 15 นาที • ข้อมูลจาก Yahoo Finance อาจล่าช้า • ข้อความเป็นข้อสังเกตเชิงให้ความรู้ ไม่ใช่คำแนะนำลงทุน`;
   if(mkSel)mkOpen(mkSel,true);
 }
@@ -637,8 +648,25 @@ function quotaOpen(){
   toast(`วันนี้ดึงข้อมูลไปแล้วราว ${nf(q.used)} ครั้ง จากเพดาน ${nf(q.limit)} ของบัญชี Google (ค่าประมาณ) • งบดึงสด ${nf(q.live)} เหลือ ${nf(left)} • ดึงทั้งกระดาน 1 รอบ ≈ ${nf(per)} ครั้ง ทำได้อีกราว ${nf(runs)} รอบ${q.full?' • ⚠️ Google แจ้งโควตาวันนี้เต็มแล้ว':''} • รีเซ็ตเที่ยงคืนเวลาไทย`,10000);
 }
 
+// ---------- ดัชนีตลาดหุ้นโลก ----------
+const chgTxt=it=>{if(it.id==='tnx'){const d=(it.price-it.price/(1+it.chgPct/100))*100;return (d>=0?'+':'')+d.toFixed(1)+' bp'}return (it.chgPct>=0?'+':'')+it.chgPct.toFixed(2)+'%'};
+const IDX={set:['ไทย','SET'],n225:['ญี่ปุ่น','Nikkei 225'],hsi:['ฮ่องกง','Hang Seng'],sh:['จีน','Shanghai'],sz:['จีน','Shenzhen'],dax:['เยอรมนี','DAX'],stoxx:['ยุโรป','Euro Stoxx 50'],spx:['สหรัฐฯ','S&P 500'],ndq:['สหรัฐฯ','Nasdaq'],dji:['สหรัฐฯ','Dow Jones']};
+let idxData=null;
+const idxOk=d=>d&&Array.isArray(d.items)&&d.items.some(x=>IDX[x.id]);
+function renderIdx(){
+  if(!idxData)return;
+  $('idxGrid').innerHTML=idxData.items.filter(x=>IDX[x.id]).map(x=>{const up=x.chgPct>=0;
+   return `<div class="rounded-xl border border-slate-800 bg-slate-900/60 p-2.5"><div class="flex items-center justify-between text-[10px] text-slate-400"><span>${IDX[x.id][0]}</span><span class="${x.open?'text-emerald-400':'text-slate-500'}">${x.open?'● ซื้อขาย':'○ ปิด/พัก'}</span></div><p class="mt-0.5 text-xs font-semibold">${IDX[x.id][1]}</p><p class="num text-base font-bold">${nf(x.price,2)}</p><p class="num text-xs font-semibold ${up?'text-emerald-400':'text-rose-400'}">${up?'+':''}${x.chgPct.toFixed(2)}%</p><p class="mt-0.5 text-[10px] text-slate-500">ราคา ณ ${x.t?fmtT(x.t):'-'}</p></div>`}).join('');
+  $('idxNote').textContent=`🕒 ดึงเมื่อ ${fmtT(idxData.fetchedMs)}${idxData.stale?' (ดึงใหม่ไม่สำเร็จ ใช้ข้อมูลล่าสุดที่เก็บไว้)':''} • อัปเดตทุกราว 30 นาที • สถานะ "ปิด/พัก" ดูจากเวลาที่ตลาดรายงานราคาล่าสุด (ช่วงพักเที่ยงหรือวันหยุดจะขึ้นเป็นปิด/พัก) • ข้อมูลจาก Yahoo Finance อาจล่าช้า`;
+}
+function loadIndices(force){
+  try{const c=JSON.parse(localStorage.getItem('nexdr_idx_v1')||'null');if(c&&!force&&idxOk(c.d)&&Date.now()-c.t<1200000){idxData=c.d;renderIdx();return}}catch(e){}
+  fetch(GAS_API_URL+'?indices=1',{credentials:'omit'}).then(r=>r.json()).then(d=>{if(!idxOk(d)){console.warn('indices: unexpected response (Code.gs may not be the latest deployed version)');throw 0}idxData=d;try{localStorage.setItem('nexdr_idx_v1',JSON.stringify({t:Date.now(),d}))}catch(e){}renderIdx()})
+  .catch(()=>{if(!idxData)$('idxGrid').innerHTML='<p class="col-span-full py-4 text-sm text-slate-400">โหลดดัชนีไม่สำเร็จในตอนนี้ ลองรีเฟรชหน้านี้อีกครั้ง</p>'});
+}
+
 window.addEventListener('DOMContentLoaded',()=>{
-  route(); loadNews(); loadMarkets(); setInterval(()=>{if(!document.hidden&&(location.hash===''||location.hash==='#home'))loadMarkets(true)},900000); if(!localStorage.getItem(WEL_KEY))$('welcome').classList.remove('hidden');
+  route(); loadNews(); loadMarkets(); loadIndices(); setInterval(()=>{if(!document.hidden&&(location.hash===''||location.hash==='#home')){loadMarkets(true);loadIndices(true)}},900000); if(!localStorage.getItem(WEL_KEY))$('welcome').classList.remove('hidden');
   try{const c=JSON.parse(localStorage.getItem(CACHE_KEY)||'null');if(c&&c.items&&c.items.length)applyPayload(c,true)}catch(e){} // โชว์ข้อมูลเก่าทันทีระหว่างรอของใหม่
   loadData(false);
 });
