@@ -33,7 +33,7 @@
       <a data-nav="tools" href="#tools" class="rounded-lg px-4 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800">🧰 เครื่องมือ</a>
       <a data-nav="guide" href="#guide" class="rounded-lg px-4 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800">📖 คู่มือ</a>
     </nav>
-    <span id="status" class="text-right text-[11px] text-slate-400">กำลังโหลด...</span>
+    <div class="text-right text-[11px] text-slate-400"><span id="status">กำลังโหลด...</span><button id="quota" onclick="quotaOpen()" class="mt-0.5 block w-full text-right"></button></div>
   </div>
 </header>
 
@@ -46,7 +46,7 @@
 </nav>
 
 <main class="mx-auto max-w-6xl px-4 py-5">
-  <div id="toast" class="fixed left-1/2 top-16 z-50 hidden -translate-x-1/2 rounded-xl border border-emerald-500/40 bg-emerald-950 px-4 py-2 text-sm text-emerald-200 shadow-xl"></div>
+  <div id="toast" class="fixed left-1/2 top-16 z-50 hidden w-[92vw] max-w-md -translate-x-1/2 text-center leading-relaxed rounded-xl border border-emerald-500/40 bg-emerald-950 px-4 py-2 text-sm text-emerald-200 shadow-xl"></div>
   <div id="loading" class="py-20 text-center text-slate-400"><div class="mx-auto mb-3 h-8 w-8 animate-spin rounded-full border-2 border-emerald-500 border-t-transparent"></div>กำลังโหลดกระดาน...</div>
   <div id="error" class="hidden rounded-2xl border border-rose-500/30 bg-rose-950/20 p-6 text-center"><p class="font-semibold text-rose-400">เชื่อมต่อข้อมูลไม่ได้ในตอนนี้</p><p id="errMsg" class="mt-1 text-xs text-slate-400"></p><button onclick="loadData(false)" class="mt-3 rounded-lg bg-rose-500/20 px-4 py-2 text-sm text-rose-300">ลองใหม่</button></div>
 
@@ -208,7 +208,7 @@ const $=id=>document.getElementById(id);
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const getMeta=s=>meta[s]||{bucket:'',targetPrice:null,note:''};
 const fmt=(v,t)=>{v=Number(v)||0;if(v<=0)return '-';const d=Number(t)>=1?0:2;return v.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d})};
-const toast=m=>{const t=$('toast');t.textContent=m;t.classList.remove('hidden');clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.add('hidden'),3500)};
+const toast=(m,ms=3500)=>{const t=$('toast');t.textContent=m;t.classList.remove('hidden');clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.add('hidden'),ms)};
 
 // ---------- ระบบหน้า (hash routing) ----------
 function route(){
@@ -296,7 +296,7 @@ function liveRefresh(){
 function applyPayload(res,fromLocal){
   items=res.items||[]; $('loading').classList.add('hidden'); $('error').classList.add('hidden');
   const live=res.syncMode==='STARRED_LIVE';
-  fullMs=res.fullSyncMs||0; const fresh=fullMs&&Date.now()-fullMs<43200000;
+  if(!fromLocal)renderQuota(res.quota); fullMs=res.fullSyncMs||0; const fresh=fullMs&&Date.now()-fullMs<43200000;
   $('status').innerHTML=`<span class="inline-block h-2 w-2 rounded-full ${fresh?'bg-emerald-400':'bg-amber-400'}"></span> ${fullMs?'ราคากระดาน: '+fmtT(fullMs):'ข้อมูลล่าสุด '+esc(res.updatedAt||'')}`;
   $('boardNote').textContent=fullMs?`🕒 ราคาในกระดานดึงเมื่อ ${fmtT(fullMs)} (อัปเดตอัตโนมัติวันละ 2 รอบ) • การ์ดที่มี ⚡ คืออัปเดตสดใหม่กว่านั้น • ดูเวลาที่ท้ายแต่ละการ์ด`:'🕒 เวลาของแต่ละรายการจะแสดงหลังรอบอัปเดตอัตโนมัติถัดไป';
   $('aTime').textContent=live?`⚡ อัปเดตสดล่าสุดเวลา ${res.updatedAt} น.`:`📦 แสดงราคาจากรอบอัปเดตอัตโนมัติ (${res.updatedAt||'-'} น.) — กดปุ่มเพื่อดึงราคาสด`;
@@ -570,13 +570,27 @@ const MK={
  usdthb:{n:'USD/THB',ic:'💱',f:v=>nf(v,2)+' ฿',x:'ค่าเงินดอลลาร์เป็นบาท ตัวเลขสูงขึ้น = บาทอ่อน ราคา DR คำนวณจาก หุ้นแม่ × ค่าเงิน ÷ Ratio ค่าเงินจึงมีผลต่อ Fair Value โดยตรง'}
 };
 const LV=[['🟢 ปกติ','text-emerald-400'],['🟡 เฝ้าระวัง','text-amber-300'],['🔴 ผันผวนสูง','text-rose-400']];
+const VZ=[
+ {ic:'🟢',n:'ปกติ',c:'text-emerald-400',t:'ตลาดอยู่ในภาวะปกติ ความกังวลต่ำ'},
+ {ic:'🟡',n:'เริ่มระวัง',c:'text-amber-300',t:'เริ่มมีความกังวล เป็นช่วงสังเกตการณ์ นักลงทุนหลายคนยังไม่ถือว่าเป็นระดับที่ต้องรีบทำอะไร'},
+ {ic:'🟠',n:'กลัวสูง',c:'text-orange-400',t:'ความกลัวสูง ตลาดแกว่งแรง นักลงทุนบางกลุ่มใช้ระดับนี้เป็นสัญญาณทบทวนความเสี่ยงของพอร์ต เช่น พิจารณาลดบางส่วน'},
+ {ic:'🔴',n:'กลัวรุนแรง',c:'text-rose-400',t:'ความกลัวรุนแรง ตลาดอยู่ในภาวะวิกฤต นักลงทุนบางกลุ่มลดความเสี่ยงของพอร์ตลงมาก'},
+ {ic:'🟣',n:'ตื่นตระหนก',c:'text-fuchsia-400',t:'ตื่นตระหนกสุดขีด นักลงทุนบางกลุ่มเริ่มพิจารณาทยอยกลับเข้าตลาดตามแผนที่วางไว้เอง'},
+ {ic:'⚫',n:'สุดโต่ง',c:'text-slate-200',t:'ระดับสุดโต่งที่พบได้น้อยมาก ในอดีตตรงกับวิกฤตใหญ่ บางกลุ่มมองว่าใกล้จุดต่ำของตลาด แต่ไม่มีใครรับประกันว่าจะไม่ลงต่อ'}
+];
+const lvOf=(id,l)=>id==='vix'?[VZ[l].ic+' '+VZ[l].n,VZ[l].c]:LV[l];
+const vixZ=cfg=>[cfg.vix_z1||20,cfg.vix_z2||30,cfg.vix_z3||40,cfg.vix_z4||50,cfg.vix_z5||60];
+function vixLadder(l,cfg){
+  const z=vixZ(cfg),R=['ต่ำกว่า '+z[0],z[0]+'–'+z[1],z[1]+'–'+z[2],z[2]+'–'+z[3],z[3]+'–'+z[4],z[4]+' ขึ้นไป'];
+  return `<div class="mt-3 space-y-1">${VZ.map((x,i)=>`<div class="flex gap-2 rounded-lg px-2 py-1.5 ${i===l?'bg-slate-800 ring-1 ring-emerald-400':''}"><span>${x.ic}</span><div><b class="${x.c}">VIX ${R[i]} • ${x.n}</b><p class="text-[12px] leading-snug text-slate-400">${x.t}</p></div></div>`).join('')}</div><p class="mt-2 text-[11px] leading-relaxed text-amber-200/90">⚠️ เกณฑ์นี้เป็นแนวทางส่วนตัวที่นักลงทุนบางกลุ่มใช้อ้างอิง ไม่ใช่งานวิจัย ไม่ใช่คำแนะนำลงทุน และไม่มีการรับประกันผล ระดับ VIX สูงมากเกิดขึ้นไม่กี่ครั้งในประวัติศาสตร์ จึงสรุปเป็นกฎตายตัวไม่ได้ เช่น ปี 2008 VIX สูงสุดช่วงปลายปี แต่ดัชนี S&P 500 ลงไปต่ำสุดอีกครั้งในเดือนมีนาคม 2009</p>`;
+}
 function mkLevel(id,v,c,cfg){
-  if(id==='vix'){let l=v>=cfg.vix_high?2:v>=cfg.vix_watch?1:0;if(c>=cfg.vix_spike_pct)l=Math.max(l,1);return l}
+  if(id==='vix'){let l=vixZ(cfg).filter(t=>v>=t).length;if(c>=cfg.vix_spike_pct)l=Math.max(l,1);return l}
   const m=cfg[id+'_move_pct']||3,a=Math.abs(c);return a>=2*m?2:a>=m?1:0;
 }
 function mkNote(id,v,c,l,cfg){
   const s=(c>=0?'+':'')+c.toFixed(2)+'%',up=c>0;
-  if(id==='vix')return (c>=cfg.vix_spike_pct?`VIX พุ่ง ${s} ในวันเดียว • `:'')+['ตลาดค่อนข้างนิ่ง ความกังวลต่ำ','ความกังวลของตลาดเริ่มสูงขึ้น หุ้นแม่ของ DR อาจแกว่งแรงขึ้น','ตลาดผันผวนสูง ราคาแกว่งแรงได้ทั้งสองทาง ระวังการลงทุนก้อนใหญ่รอบเดียว ลองพิจารณาการทยอยลงทุนและเงินสำรองให้เหมาะกับความเสี่ยงของตัวเอง'][l];
+  if(id==='vix')return (c>=cfg.vix_spike_pct?`VIX พุ่ง ${s} ในวันเดียว • `:'')+VZ[l].t;
   if(l===0)return {gold:'เคลื่อนไหวในกรอบปกติ',oil:'เคลื่อนไหวในกรอบปกติ',btc:'ซื้อขาย 24 ชม. ผันผวนสูงกว่าหุ้นทั่วไปเสมอ',usdthb:'ค่าเงินมีผลต่อ Fair Value ของ DR โดยตรง'}[id];
   return {
    gold:up?`ทอง ${s} ในวันเดียว มักเกิดเมื่อตลาดกังวลความเสี่ยงหรือดอลลาร์อ่อน (แนวโน้มทั่วไป ไม่ใช่กฎตายตัว)`:`ทอง ${s} มักสัมพันธ์กับดอลลาร์แข็งหรือดอกเบี้ยสูงขึ้น (แนวโน้มทั่วไป ไม่ใช่กฎตายตัว)`,
@@ -589,11 +603,11 @@ function spark(S,up){
   return `<svg viewBox="0 0 ${W} ${H}" class="h-6 w-full"><polyline fill="none" stroke="${up?'#34d399':'#fb7185'}" stroke-width="1.5" points="${S.map((v,i)=>(i/(S.length-1)*W).toFixed(1)+','+(H-2-(v-mn)/r*(H-4)).toFixed(1)).join(' ')}"/></svg>`;
 }
 let mkData=null,mkSel='';
-function mkView(it){const m=MK[it.id];if(!m)return null;const cfg=mkData.cfg||{},l=mkLevel(it.id,it.price,it.chgPct,cfg);return {m,l,note:mkNote(it.id,it.price,it.chgPct,l,cfg)}}
+function mkView(it){const m=MK[it.id];if(!m)return null;const cfg=mkData.cfg||{},l=mkLevel(it.id,it.price,it.chgPct,cfg);return {m,l,lv:lvOf(it.id,l),note:mkNote(it.id,it.price,it.chgPct,l,cfg)}}
 function renderMarkets(){
   if(!mkData)return;
   $('mkGrid').innerHTML=mkData.items.map(it=>{const v=mkView(it);if(!v)return '';const up=it.chgPct>=0;
-   return `<button onclick="mkOpen('${it.id}')" class="rounded-2xl border ${it.id===mkSel?'border-emerald-400':'border-slate-800'} bg-slate-900/70 p-3 text-left transition active:scale-[.98]"><div class="flex items-center justify-between text-xs text-slate-400"><span>${v.m.ic} ${v.m.n}</span><span class="${LV[v.l][1]}">${LV[v.l][0]}</span></div><p class="mt-1 text-lg font-bold num">${v.m.f(it.price)}</p><p class="text-xs font-semibold num ${up?'text-emerald-400':'text-rose-400'}">${up?'+':''}${it.chgPct.toFixed(2)}%</p>${spark(it.series||[],up)}<p class="mt-1 line-clamp-2 text-[11px] leading-snug text-slate-400">${v.note}</p></button>`}).join('');
+   return `<button onclick="mkOpen('${it.id}')" class="rounded-2xl border ${it.id===mkSel?'border-emerald-400':'border-slate-800'} bg-slate-900/70 p-3 text-left transition active:scale-[.98]"><div class="flex items-center justify-between text-xs text-slate-400"><span>${v.m.ic} ${v.m.n}</span><span class="${v.lv[1]}">${v.lv[0]}</span></div><p class="mt-1 text-lg font-bold num">${v.m.f(it.price)}</p><p class="text-xs font-semibold num ${up?'text-emerald-400':'text-rose-400'}">${up?'+':''}${it.chgPct.toFixed(2)}%</p>${spark(it.series||[],up)}<p class="mt-1 line-clamp-2 text-[11px] leading-snug text-slate-400">${v.note}</p></button>`}).join('');
   $('mkNote').textContent=`🕒 ดึงเมื่อ ${fmtT(mkData.fetchedMs)}${mkData.stale?' (ดึงใหม่ไม่สำเร็จ ใช้ข้อมูลล่าสุดที่เก็บไว้)':''} • อัปเดตทุกราว 15 นาที • ข้อมูลจาก Yahoo Finance อาจล่าช้า • ข้อความเป็นข้อสังเกตเชิงให้ความรู้ ไม่ใช่คำแนะนำลงทุน`;
   if(mkSel)mkOpen(mkSel,true);
 }
@@ -601,7 +615,7 @@ function mkOpen(id,keep){
   const it=mkData&&mkData.items.find(x=>x.id===id),el=$('mkDetail');if(!it)return;
   if(mkSel===id&&!keep){mkSel='';el.classList.add('hidden');renderMarkets();return}
   mkSel=id;const v=mkView(it);if(!keep)renderMarkets();
-  el.innerHTML=`<b>${v.m.ic} ${v.m.n}</b> <span class="${LV[v.l][1]} text-xs">${LV[v.l][0]}</span><p class="mt-2">${v.note}</p><p class="mt-2 text-slate-400">📘 ${v.m.x}</p><p class="mt-2 text-[11px] text-slate-500">ราคา ณ ${it.t?fmtT(it.t):'-'} (เวลาที่ตลาดรายงานล่าสุด) • <a href="#guide/inv" class="text-emerald-400 underline">ดูคำอธิบายศัพท์ในคู่มือ</a></p>`;
+  el.innerHTML=`<b>${v.m.ic} ${v.m.n}</b> <span class="${v.lv[1]} text-xs">${v.lv[0]}</span><p class="mt-2">${v.note}</p><p class="mt-2 text-slate-400">📘 ${v.m.x}</p>${id==='vix'?vixLadder(v.l,mkData.cfg||{}):''}<p class="mt-2 text-[11px] text-slate-500">ราคา ณ ${it.t?fmtT(it.t):'-'} (เวลาที่ตลาดรายงานล่าสุด) • <a href="#guide/inv" class="text-emerald-400 underline">ดูคำอธิบายศัพท์ในคู่มือ</a></p>`;
   el.classList.remove('hidden');
 }
 const mkOk=d=>d&&Array.isArray(d.items)&&d.items.some(x=>MK[x.id]); // ตรวจว่าเป็นข้อมูลตัวชี้วัดจริง ไม่ใช่ข้อมูลอื่น
@@ -609,6 +623,18 @@ function loadMarkets(force){
   try{const c=JSON.parse(localStorage.getItem('nexdr_mk_v1')||'null');if(c&&!force&&mkOk(c.d)&&Date.now()-c.t<600000){mkData=c.d;renderMarkets();return}}catch(e){}
   fetch(GAS_API_URL+'?markets=1',{credentials:'omit'}).then(r=>r.json()).then(d=>{if(!mkOk(d)){console.warn('markets: unexpected response (Code.gs may not be the latest deployed version)');throw 0}mkData=d;try{localStorage.setItem('nexdr_mk_v1',JSON.stringify({t:Date.now(),d}))}catch(e){}renderMarkets()})
   .catch(()=>{if(!mkData)$('mkGrid').innerHTML='<p class="col-span-full py-4 text-sm text-slate-400">โหลดตัวชี้วัดไม่สำเร็จในตอนนี้ ลองรีเฟรชหน้านี้อีกครั้ง</p>'});
+}
+
+// ---------- ตัวนับโควตาดึงสด (มุมขวาบน) ----------
+let quotaData=null;
+function renderQuota(q){
+  if(!q||!q.live)return;quotaData=q;
+  const left=Math.max(0,q.live-q.used),pct=q.full?0:Math.round(left/q.live*100),col=q.full||pct<20?'bg-rose-500':pct<50?'bg-amber-400':'bg-emerald-500';
+  $('quota').innerHTML=`<span class="text-slate-300">⚡ ดึงสดเหลือ <b class="num">${q.full?0:nf(left)}</b> / ${nf(q.live)}</span><span class="mt-0.5 block h-1 w-full overflow-hidden rounded bg-slate-800"><i class="block h-1 ${col}" style="width:${pct}%"></i></span>`;
+}
+function quotaOpen(){
+  const q=quotaData;if(!q)return;const left=Math.max(0,q.live-q.used),per=items.length*2+10,runs=Math.floor(left/per);
+  toast(`วันนี้ดึงข้อมูลไปแล้วราว ${nf(q.used)} ครั้ง จากเพดาน ${nf(q.limit)} ของบัญชี Google (ค่าประมาณ) • งบดึงสด ${nf(q.live)} เหลือ ${nf(left)} • ดึงทั้งกระดาน 1 รอบ ≈ ${nf(per)} ครั้ง ทำได้อีกราว ${nf(runs)} รอบ${q.full?' • ⚠️ Google แจ้งโควตาวันนี้เต็มแล้ว':''} • รีเซ็ตเที่ยงคืนเวลาไทย`,10000);
 }
 
 window.addEventListener('DOMContentLoaded',()=>{
