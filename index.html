@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>NexDR V8.8 — เครื่องมือเช็คราคา DR | By. NakinMuni</title>
+<title>NexDR V8.8.1 — เครื่องมือเช็คราคา DR | By. NakinMuni</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -143,7 +143,7 @@
       <input id="gq" oninput="renderGloss()" class="inp" placeholder="🔍 ค้นหาคำศัพท์ เช่น ปันผล, DCA, P/E" />
       <div id="gloss" class="space-y-2"></div>
     </div>
-    <p class="pt-4 text-center text-xs text-slate-500">NexDR V8.8 • Designed & Engineered By. NakinMuni</p>
+    <p class="pt-4 text-center text-xs text-slate-500">NexDR V8.8.1 • Designed & Engineered By. NakinMuni</p>
   </section>
 </main>
 
@@ -468,18 +468,19 @@ const TYPE_STYLE={'ความรู้พื้นฐาน':'bg-emerald-500/1
 const GALIAS={nex:'nexdr',inv:'glossary'}; // ลิงก์รุ่นเก่า #guide/nex และ #guide/inv ยังใช้ได้
 const GUIDE_FALLBACK=[{slug:'nexdr',ic:'🧭',name:'คู่มือ NexDR',type:'คู่มือใช้งาน',upd:'',soon:false},{slug:'glossary',ic:'🎓',name:'คู่มือการลงทุน (ศัพท์)',type:'ความรู้พื้นฐาน',upd:'',soon:false}];
 let GUIDES=null,GLOSS=[],docCache={},gTok=0;
-const getTxt=f=>fetch(CONTENT_BASE+f,{cache:'no-cache'}).then(r=>{if(!r.ok)throw new Error(r.status);return r.text()});
+// ใส่ ?v=นาทีปัจจุบัน และไม่ใช้แคช เพื่อกันเบราว์เซอร์/CDN จำผลเก่า (เช่น 404 ตอนไฟล์ยังไม่ขึ้น) ไฟล์เล็ก ไม่กินโควตา Google
+const getTxt=f=>fetch(`${CONTENT_BASE}${f}?v=${Math.floor(Date.now()/60000)}`,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.text()});
 const parseLines=t=>t.replace(/\r/g,'').split('\n').map(l=>l.trim()).filter(l=>l&&l[0]!=='#');
 async function loadGuides(){
   if(GUIDES)return GUIDES;
-  try{GUIDES=parseLines(await getTxt('index.txt')).map(l=>{const a=l.split('|').map(x=>x.trim());return {slug:a[0],ic:a[1]||'📄',name:a[2]||a[0],type:a[3]||'',upd:a[4]||'',soon:(a[5]||'')==='soon'}}).filter(g=>/^[a-z0-9-]+$/.test(g.slug));if(!GUIDES.length)throw 0}
-  catch(e){GUIDES=GUIDE_FALLBACK.slice();GUIDES.offline=true}
+  try{GUIDES=parseLines(await getTxt('index.txt')).map(l=>{const a=l.split('|').map(x=>x.trim());return {slug:a[0],ic:a[1]||'📄',name:a[2]||a[0],type:a[3]||'',upd:a[4]||'',soon:(a[5]||'')==='soon'}}).filter(g=>/^[a-z0-9-]+$/.test(g.slug));if(!GUIDES.length)throw new Error('รายการว่างหรือรูปแบบไม่ถูกต้อง')}
+  catch(e){GUIDES=GUIDE_FALLBACK.slice();GUIDES.offline=true;GUIDES.why=String((e&&e.message)||e)}
   return GUIDES;
 }
 async function loadGloss(){
   if(GLOSS.length)return;
   try{GLOSS=parseLines(await getTxt('glossary.txt')).filter(l=>l.includes('|')).map(l=>{const i=l.indexOf('|');return [l.slice(0,i).trim(),l.slice(i+1).trim()]})}
-  catch(e){GLOSS=[];GLOSS.err=1;$('gloss').innerHTML='<p class="py-6 text-center text-amber-300">โหลดคลังศัพท์ไม่สำเร็จในตอนนี้ ลองรีเฟรชหน้านี้อีกครั้ง</p>'}
+  catch(e){GLOSS=[];GLOSS.err=1;$('gloss').innerHTML=`<p class="py-6 text-center text-amber-300">โหลดคลังศัพท์ไม่สำเร็จ (${esc((e&&e.message)||e)}) ลองรีเฟรชหน้านี้อีกครั้ง</p>`}
 }
 // แปลง Markdown แบบย่อ: # ## ### หัวข้อ, - รายการ, 1. รายการเลข, > กล่องเตือน, --- เส้นคั่น, **ตัวหนา**, [ข้อความ](ลิงก์) + {{market-status}} {{backup}}
 function inl(s){return esc(s).replace(/\*\*(.+?)\*\*/g,'<b class="text-white">$1</b>').replace(/\[([^\]]+)\]\(((?:https?:\/\/|#)[^)\s]+)\)/g,(m,t,u)=>`<a href="${u}"${u[0]==='#'?'':' target="_blank" rel="noopener noreferrer"'} class="text-emerald-400 underline">${t}</a>`)}
@@ -506,14 +507,14 @@ async function showGuide(k){
   const g=gs.find(x=>x.slug===k&&!x.soon),show=(id,on)=>$(id).classList.toggle('hidden',!on);
   show('g-home',!g);show('g-back',!!g);show('g-meta',!!g);show('g-doc',!!g&&g.slug!=='glossary');show('g-inv',!!g&&g.slug==='glossary');
   if(!g){
-    $('g-home').innerHTML=gs.map(x=>tile('#guide/'+x.slug,x.ic,esc(x.name),x.soon)).join('')+(gs.offline?'<p class="col-span-full text-xs text-amber-300">โหลดรายการคู่มือไม่สำเร็จ แสดงเฉพาะรายการสำรอง ลองรีเฟรชหน้านี้อีกครั้ง</p>':'');
+    $('g-home').innerHTML=gs.map(x=>tile('#guide/'+x.slug,x.ic,esc(x.name),x.soon)).join('')+(gs.offline?`<p class="col-span-full text-xs text-amber-300">โหลดรายการคู่มือไม่สำเร็จ (${esc(gs.why)}) แสดงเฉพาะรายการสำรอง ลองรีเฟรชหน้านี้อีกครั้ง</p>`:'');
     return;
   }
   $('g-meta').innerHTML=`<h3 class="text-lg font-bold text-white">${g.ic} ${esc(g.name)}</h3><div class="flex flex-wrap items-center gap-2 text-xs">${g.type?`<span class="rounded-full px-2 py-0.5 ${TYPE_STYLE[g.type]||'bg-slate-700 text-slate-200'}">${esc(g.type)}</span>`:''}${g.upd?`<span class="text-slate-500">อัปเดต ${esc(g.upd)}</span>`:''}</div>`;
   if(g.slug==='glossary'){await loadGloss();if(my===gTok)renderGloss();return}
   $('g-doc').innerHTML='<p class="text-slate-400">กำลังโหลด...</p>';
   try{const t=docCache[g.slug]||(docCache[g.slug]=await getTxt(g.slug+'.txt'));if(my===gTok)$('g-doc').innerHTML=md(t)}
-  catch(e){delete docCache[g.slug];if(my===gTok)$('g-doc').innerHTML='<p class="text-amber-300">โหลดเนื้อหานี้ไม่สำเร็จในตอนนี้ ลองรีเฟรชหน้านี้อีกครั้ง</p>'}
+  catch(e){delete docCache[g.slug];if(my===gTok)$('g-doc').innerHTML=`<p class="text-amber-300">โหลดเนื้อหานี้ไม่สำเร็จ (${esc((e&&e.message)||e)}) ลองรีเฟรชหน้านี้อีกครั้ง</p>`}
 }
 function renderGloss(){
   if(!GLOSS.length){if(!GLOSS.err)$('gloss').innerHTML='<p class="py-6 text-center text-slate-400">ยังไม่มีคำศัพท์</p>';return}
