@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>NexDR V8.7 — เครื่องมือเช็คราคา DR | By. NakinMuni</title>
+<title>NexDR V8.8 — เครื่องมือเช็คราคา DR | By. NakinMuni</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -135,33 +135,15 @@
   <section id="p-guide" class="page mx-auto max-w-3xl space-y-3 text-sm leading-relaxed text-slate-300">
     <h2 class="text-xl font-bold text-white">📖 คู่มือ</h2>
     <a id="g-back" href="#guide" class="hidden text-sm text-emerald-400">← คู่มือทั้งหมด</a>
+    <div id="g-meta" class="hidden space-y-1"></div>
     <div id="g-home" class="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-6"></div>
-    <div id="g-nex" class="hidden space-y-3">
-    <details open class="rounded-xl border border-slate-800 bg-slate-900/60 p-4"><summary class="font-bold text-white">1. DR คืออะไร?</summary>
-      <p class="mt-2">DR (Depositary Receipt) คือใบรับฝากที่ซื้อขายในตลาดหุ้นไทย แต่ราคาอิงหุ้นต่างประเทศ เช่น AAPL80 อิงหุ้น Apple ทำให้ซื้อหุ้นโลกด้วยเงินบาทได้ ราคา DR จึงขยับตามหุ้นแม่และค่าเงิน</p></details>
-    <details class="rounded-xl border border-slate-800 bg-slate-900/60 p-4"><summary class="font-bold text-white">2. อ่านการ์ดหุ้นอย่างไร?</summary>
-      <ul class="mt-2 list-disc space-y-1 pl-5"><li><b>Fair Value (ราคาที่ควรเป็น)</b> = ราคาหุ้นแม่ × ค่าเงิน ÷ Ratio</li><li><b>ราคา SET</b> = ราคาจริงของ DR บนกระดานไทยตอนนี้</li><li><b>โซนตั้งรับ</b> = ราคาที่ถูกกว่า Fair Value อย่างน้อย 1 ช่วงราคา (Tick) ถ้าตั้งซื้อไม่เกินนี้ถือว่าได้ส่วนลด</li><li><b>ส่วนต่าง %</b> ติดลบ (สีเขียว) = DR ถูกกว่าหุ้นแม่ / บวก (สีแดง) = DR แพงกว่า</li></ul></details>
-    <details class="rounded-xl border border-slate-800 bg-slate-900/60 p-4"><summary class="font-bold text-white">3. ป้ายสถานะ 3 แบบ</summary>
-      <ul class="mt-2 space-y-1"><li>🟢 <b>น่าสะสม</b> — ราคา SET ต่ำกว่าหรือเท่าโซนตั้งรับ</li><li>⚪ <b>เหมาะสม</b> — ใกล้เคียงราคาที่ควรเป็น</li><li>🔴 <b>แพงกว่าแม่</b> — จ่ายแพงกว่าซื้อหุ้นแม่ตรงๆ ควรรอ</li></ul>
-      <p class="mt-2 text-xs text-amber-300">⚠️ เป็นเครื่องมือช่วยเทียบราคาเท่านั้น ไม่ใช่คำแนะนำให้ซื้อขาย ควรศึกษาตัวธุรกิจและความเสี่ยงเอง</p></details>
-    <details class="rounded-xl border border-slate-800 bg-slate-900/60 p-4"><summary class="font-bold text-white">4. วิธีใช้งานแนะนำ</summary>
-      <ol class="mt-2 list-decimal space-y-1 pl-5"><li>ที่ 🏠 กระดานหลัก ค้นหาหรือกรองหุ้นที่สนใจ แล้วกดดาว ☆</li><li>กดที่การ์ดเพื่อเปิดเครื่องคิดเลข ใส่งบเป็นบาท จะบอกว่าซื้อได้กี่หน่วย (รวมเศษ Odd Lot) และตั้งราคาเป้าหมาย/โน้ตของตัวเองได้</li><li>ที่ ⭐ เริ่มวิเคราะห์ กด ⚡ อัปเดตราคาสด เฉพาะตอนที่ต้องการราคาล่าสุด</li></ol></details>
-    <details class="rounded-xl border border-slate-800 bg-slate-900/60 p-4"><summary class="font-bold text-white">5. ทำไมราคาไม่ได้อัปเดตตลอดเวลา?</summary>
-      <p class="mt-2">กระดานทั้งตลาดอัปเดตอัตโนมัติวันละ 2 รอบ เพื่อไม่ให้เกินโควตาฟรีของ Google ส่วนหุ้นที่ติดดาวกดอัปเดตสดได้เอง (ถ้ามีคนกดซ้ำภายใน 5 นาที ระบบจะใช้ราคาเดิม) ดูเวลาอัปเดตล่าสุดมุมขวาบนเสมอ</p></details>
-    <details class="rounded-xl border border-slate-800 bg-slate-900/60 p-4"><summary class="font-bold text-white">6. เวลาเปิด-ปิดตลาด (เวลาไทย)</summary>
-      <ul class="mt-2 space-y-1 text-[13px]"><li>🇹🇭 SET (DR): รอบกลางวัน 08:00–16:30 (DR ทุกตัว เริ่มตั้งแต่ 16 พ.ย. 2569) • รอบกลางคืน 19:00–02:45 (เฉพาะ DR อ้างอิงยุโรป/สหรัฐฯ) (Dime! Happy Hour ค่าคอมฯ 0% วันพุธ 15:00–16:00)</li><li>🇭🇰🇨🇳 ฮ่องกง/จีน: ~08:30–15:00 • 🇯🇵 ญี่ปุ่น: ~07:00–13:30</li><li>🇪🇺 ยุโรป: ~14:00/15:00–22:30/23:30 • 🇺🇸 สหรัฐฯ: ~20:30/21:30–03:00/04:00</li><li class="text-slate-500">เวลาของตลาดอื่นเป็นค่าโดยประมาณตามเวลาไทย เปลี่ยนตามฤดูกาลและวันหยุดตลาด</li></ul>
-      <p id="mkt" class="mt-2 text-xs text-slate-400"></p></details>
-    <details class="rounded-xl border border-slate-800 bg-slate-900/60 p-4"><summary class="font-bold text-white">7. สำรอง / กู้คืนข้อมูลของฉัน</summary>
-      <p class="mt-2">ดาว เป้าหมาย และโน้ตเก็บในเบราว์เซอร์เครื่องนี้เท่านั้น ถ้าจะย้ายเครื่องหรือล้างแคช ให้สำรองไว้ก่อน</p>
-      <div class="mt-3 flex flex-wrap items-center gap-2"><button onclick="exportData()" class="rounded-lg bg-emerald-500 px-4 py-2 font-bold text-slate-950">⬇️ ดาวน์โหลดไฟล์สำรอง</button>
-      <label class="rounded-lg border border-slate-600 px-4 py-2 text-slate-200">⬆️ กู้คืนจากไฟล์<input type="file" accept=".json" onchange="importData(event)" class="hidden" /></label></div></details>
-    </div>
+    <article id="g-doc" class="hidden space-y-3 rounded-2xl border border-slate-800 bg-slate-900/50 p-4"></article>
     <div id="g-inv" class="hidden space-y-3">
       <div class="rounded-xl border border-amber-500/30 bg-amber-950/10 p-3 text-xs text-amber-200">เนื้อหาเป็นความรู้ทั่วไปเพื่อการศึกษา ไม่ใช่คำแนะนำลงทุน การลงทุนมีความเสี่ยง อาจขาดทุนเงินต้น ควรศึกษาข้อมูลเพิ่มเติมจากแหล่งทางการ เช่น ตลาดหลักทรัพย์ฯ และ ก.ล.ต.</div>
       <input id="gq" oninput="renderGloss()" class="inp" placeholder="🔍 ค้นหาคำศัพท์ เช่น ปันผล, DCA, P/E" />
       <div id="gloss" class="space-y-2"></div>
     </div>
-    <p class="pt-4 text-center text-xs text-slate-500">NexDR V8.7 • Designed & Engineered By. NakinMuni</p>
+    <p class="pt-4 text-center text-xs text-slate-500">NexDR V8.8 • Designed & Engineered By. NakinMuni</p>
   </section>
 </main>
 
@@ -218,7 +200,7 @@ function route(){
   const parts=(location.hash||'#home').slice(1).split('/'); const name=['home','board','analyze','tools','guide'].includes(parts[0])?parts[0]:'home'; if(name==='tools')tool=TOOLS[parts[1]]?parts[1]:null;
   document.querySelectorAll('.page').forEach(e=>e.classList.toggle('on',e.id==='p-'+name));
   document.querySelectorAll('[data-nav]').forEach(a=>{const on=a.dataset.nav===name;a.classList.toggle('text-emerald-400',on);a.classList.toggle('bg-slate-800',on&&a.parentElement.classList.contains('md:flex'));a.classList.toggle('text-slate-400',!on&&!a.parentElement.classList.contains('md:flex'))});
-  window.scrollTo(0,0); if(name==='guide'){$('mkt').textContent=marketNow();showGuide(parts[1]||'')} if(name==='tools'&&(tool!==shownTool||!$('tGrid').innerHTML&&!tool)){shownTool=tool;renderTools()}
+  window.scrollTo(0,0); if(name==='guide')showGuide(parts[1]||''); if(name==='tools'&&(tool!==shownTool||!$('tGrid').innerHTML&&!tool)){shownTool=tool;renderTools()}
 }
 window.addEventListener('hashchange',route);
 
@@ -480,48 +462,63 @@ function renderTools(){
 function runTool(){const v={};TOOLS[tool].f.forEach(([k,,,t])=>{const e=$('tf_'+k);v[k]=t==='area'?e.value:(parseFloat(e.value)||0)});$('tOut').innerHTML=TOOLS[tool].run(v)}
 
 // ---------- คู่มือ 2 การ์ด + ศัพท์ ----------
-function showGuide(k){
-  const ok=k==='nex'||k==='inv'; k=ok?k:'';
-  $('g-home').classList.toggle('hidden',!!k);$('g-back').classList.toggle('hidden',!k);
-  $('g-nex').classList.toggle('hidden',k!=='nex');$('g-inv').classList.toggle('hidden',k!=='inv');
-  $('g-home').innerHTML=tile('#guide/nex','🧭','คู่มือ NexDR')+tile('#guide/inv','🎓','คู่มือการลงทุน')+tile('','📑','การอ่านงบการเงิน',1)+tile('','💡','แนวคิดการลงทุน',1)+tile('','🛡️','บริหารความเสี่ยง',1);
-  if(k==='inv')renderGloss();
+// ---------- คู่มือ: โหลดเนื้อหาจากโฟลเดอร์ content/ ----------
+const CONTENT_BASE='content/';
+const TYPE_STYLE={'ความรู้พื้นฐาน':'bg-emerald-500/15 text-emerald-300','มุมมองส่วนตัว':'bg-amber-500/15 text-amber-300','อ้างอิงแหล่งภายนอก':'bg-sky-500/15 text-sky-300','คู่มือใช้งาน':'bg-slate-700 text-slate-200'};
+const GALIAS={nex:'nexdr',inv:'glossary'}; // ลิงก์รุ่นเก่า #guide/nex และ #guide/inv ยังใช้ได้
+const GUIDE_FALLBACK=[{slug:'nexdr',ic:'🧭',name:'คู่มือ NexDR',type:'คู่มือใช้งาน',upd:'',soon:false},{slug:'glossary',ic:'🎓',name:'คู่มือการลงทุน (ศัพท์)',type:'ความรู้พื้นฐาน',upd:'',soon:false}];
+let GUIDES=null,GLOSS=[],docCache={},gTok=0;
+const getTxt=f=>fetch(CONTENT_BASE+f,{cache:'no-cache'}).then(r=>{if(!r.ok)throw new Error(r.status);return r.text()});
+const parseLines=t=>t.replace(/\r/g,'').split('\n').map(l=>l.trim()).filter(l=>l&&l[0]!=='#');
+async function loadGuides(){
+  if(GUIDES)return GUIDES;
+  try{GUIDES=parseLines(await getTxt('index.txt')).map(l=>{const a=l.split('|').map(x=>x.trim());return {slug:a[0],ic:a[1]||'📄',name:a[2]||a[0],type:a[3]||'',upd:a[4]||'',soon:(a[5]||'')==='soon'}}).filter(g=>/^[a-z0-9-]+$/.test(g.slug));if(!GUIDES.length)throw 0}
+  catch(e){GUIDES=GUIDE_FALLBACK.slice();GUIDES.offline=true}
+  return GUIDES;
 }
-const GLOSS=[
-['หุ้น','หลักทรัพย์ที่แสดงความเป็นเจ้าของบริษัทส่วนหนึ่ง ผู้ถือหวังกำไรจากราคาที่เพิ่มขึ้นและเงินปันผล'],
-['DR (Depositary Receipt)','ใบรับฝากที่ออกโดยบริษัทในไทย อิงหุ้นหรือ ETF ต่างประเทศ ซื้อขายในตลาดหลักทรัพย์ไทยด้วยเงินบาท'],
-['ETF','กองทุนที่ซื้อขายในตลาดเหมือนหุ้น ส่วนใหญ่ลงทุนตามดัชนี เช่น S&P 500'],
-['กองทุนรวม','เงินจากผู้ลงทุนหลายคนรวมกัน ให้ผู้จัดการกองทุนนำไปลงทุน มีค่าธรรมเนียมการจัดการ'],
-['Blue Chip','หุ้นบริษัทขนาดใหญ่ ฐานะการเงินและชื่อเสียงมั่นคง'],
-['Market Cap','มูลค่าบริษัทตามราคาตลาด = ราคาหุ้น × จำนวนหุ้นทั้งหมด'],
-['เงินปันผล (Dividend)','ส่วนแบ่งกำไรที่บริษัทจ่ายให้ผู้ถือหุ้น ไม่ใช่ทุกบริษัทจ่าย และไม่มีการรับประกัน'],
-['Dividend Yield','อัตราปันผลต่อปี = ปันผลต่อหน่วย ÷ ราคา × 100'],
-['EPS','กำไรสุทธิต่อหุ้น = กำไรสุทธิ ÷ จำนวนหุ้น'],
-['P/E','ราคาหุ้น ÷ EPS บอกว่าจ่ายราคากี่เท่าของกำไรต่อปี ควรเทียบกับบริษัทในกลุ่มธุรกิจเดียวกัน'],
-['DCA','ทยอยลงทุนด้วยจำนวนเงินเท่าๆ กันตามรอบเวลา ช่วยลดความเสี่ยงจากการเลือกจังหวะซื้อผิด'],
-['กระจายความเสี่ยง','ไม่ลงทุนทุกอย่างในที่เดียว กระจายหลายธุรกิจ สินทรัพย์ หรือประเทศ'],
-['ความผันผวน (Volatility)','ระดับที่ราคาขึ้นลงแรง ผันผวนสูงมักมีโอกาสได้ผลตอบแทนสูง แต่ก็ขาดทุนหนักได้เช่นกัน'],
-['ขาดทุนที่ยังไม่รับรู้','ราคาลงต่ำกว่าต้นทุนแต่ยังไม่ได้ขาย จะกลายเป็นขาดทุนจริงเมื่อขายออก'],
-['Bid / Offer','Bid คือราคาที่ผู้ซื้อตั้งรอซื้อ Offer คือราคาที่ผู้ขายตั้งรอขาย'],
-['Board Lot / Odd Lot','Board Lot คือหน่วยซื้อขายมาตรฐาน (ปกติ 100 หน่วย) Odd Lot คือเศษที่น้อยกว่านั้น ซึ่งซื้อขายบนกระดานแยก'],
-['Tick Size','ช่วงห่างของราคาที่ตั้งซื้อขายได้ ขึ้นกับระดับราคา เช่น ราคาต่ำๆ ขยับทีละสตางค์'],
-['Fair Value (DR)','ราคาที่ DR ควรเป็นตามราคาหุ้นแม่ × อัตราแลกเปลี่ยน ÷ Ratio'],
-['Premium / Discount','DR ราคาแพงกว่า (Premium) หรือถูกกว่า (Discount) ราคาที่ควรเป็นตามหุ้นแม่'],
-['ความเสี่ยงค่าเงิน','สินทรัพย์ต่างประเทศอิงสกุลเงินอื่น ค่าเงินบาทที่เปลี่ยนมีผลต่อกำไรขาดทุนเมื่อวัดเป็นบาท'],
-['ดอกเบี้ยทบต้น','ดอกเบี้ยที่ถูกนำไปคิดดอกเบี้ยต่อ ยิ่งลงทุนนานยิ่งเห็นผล'],
-['เงินสำรองฉุกเฉิน','เงินสำรองไว้ใช้ยามจำเป็น มักแนะนำราว 3–6 เดือนของรายจ่ายก่อนเริ่มลงทุนจริงจัง'],
-['DTI','สัดส่วนภาระหนี้ต่อเดือน ÷ รายได้ต่อเดือน ใช้ประเมินว่าหนี้หนักเกินไปหรือไม่'],
-['Snowball / Avalanche','วิธีปิดหนี้หลายก้อน: Snowball ปิดยอดน้อยสุดก่อน, Avalanche ปิดดอกเบี้ยสูงสุดก่อน'],
-['VIX (ดัชนีความกลัว)','วัดว่านักลงทุนคาดว่าหุ้นสหรัฐฯ (S&P 500) จะแกว่งแรงแค่ไหนในอีก 30 วัน ค่าสูง = ตลาดกังวลและผันผวน ค่าต่ำ = ตลาดนิ่ง'],
-['ทองโลก (Gold Futures)','ราคาทองคำล่วงหน้าในตลาดโลก หน่วยดอลลาร์ต่อออนซ์ ไม่ใช่ราคาทองแท่งบาทละของไทย'],
-['น้ำมัน WTI','น้ำมันดิบอ้างอิงของสหรัฐฯ ราคามีผลต่อต้นทุนหลายธุรกิจและหุ้นกลุ่มพลังงาน'],
-['Bitcoin (BTC)','สกุลเงินดิจิทัลที่ใหญ่ที่สุด ซื้อขาย 24 ชม. ผันผวนสูงมาก'],
-['USD/THB','ราคาดอลลาร์สหรัฐเป็นบาท ตัวเลขสูงขึ้น = บาทอ่อน ค่านี้ถูกใช้คำนวณ Fair Value ของ DR'],
-['สินทรัพย์ปลอดภัย (Safe Haven)','สินทรัพย์ที่นักลงทุนมักย้ายเข้าไปถือเมื่อตลาดกังวล เช่น ทองคำ แต่ไม่ได้การันตีว่าจะราคาขึ้นเสมอ']
-];
+async function loadGloss(){
+  if(GLOSS.length)return;
+  try{GLOSS=parseLines(await getTxt('glossary.txt')).filter(l=>l.includes('|')).map(l=>{const i=l.indexOf('|');return [l.slice(0,i).trim(),l.slice(i+1).trim()]})}
+  catch(e){GLOSS=[];GLOSS.err=1;$('gloss').innerHTML='<p class="py-6 text-center text-amber-300">โหลดคลังศัพท์ไม่สำเร็จในตอนนี้ ลองรีเฟรชหน้านี้อีกครั้ง</p>'}
+}
+// แปลง Markdown แบบย่อ: # ## ### หัวข้อ, - รายการ, 1. รายการเลข, > กล่องเตือน, --- เส้นคั่น, **ตัวหนา**, [ข้อความ](ลิงก์) + {{market-status}} {{backup}}
+function inl(s){return esc(s).replace(/\*\*(.+?)\*\*/g,'<b class="text-white">$1</b>').replace(/\[([^\]]+)\]\(((?:https?:\/\/|#)[^)\s]+)\)/g,(m,t,u)=>`<a href="${u}"${u[0]==='#'?'':' target="_blank" rel="noopener noreferrer"'} class="text-emerald-400 underline">${t}</a>`)}
+function md(src){
+  const out=[];let list='',para=[];
+  const flush=()=>{if(para.length){out.push(`<p>${inl(para.join(' '))}</p>`);para=[]}},end=()=>{if(list){out.push(`</${list}>`);list=''}};
+  src.replace(/\r/g,'').split('\n').forEach(raw=>{
+    const l=raw.trim();let m;
+    if(!l){flush();end();return}
+    if(l==='{{market-status}}'){flush();end();out.push(`<p class="text-xs text-slate-400">${esc(marketNow())}</p>`);return}
+    if(l==='{{backup}}'){flush();end();out.push('<div class="flex flex-wrap items-center gap-2"><button onclick="exportData()" class="rounded-lg bg-emerald-500 px-4 py-2 font-bold text-slate-950">⬇️ ดาวน์โหลดไฟล์สำรอง</button><label class="rounded-lg border border-slate-600 px-4 py-2 text-slate-200">⬆️ กู้คืนจากไฟล์<input type="file" accept=".json" onchange="importData(event)" class="hidden" /></label></div>');return}
+    if(l==='---'){flush();end();out.push('<hr class="border-slate-800">');return}
+    if(m=l.match(/^(#{1,3})\s+(.*)/)){flush();end();out.push(m[1].length===1?`<h3 class="text-lg font-bold text-white">${inl(m[2])}</h3>`:`<h4 class="border-t border-slate-800 pt-3 text-base font-bold text-white">${inl(m[2])}</h4>`);return}
+    if(m=l.match(/^>\s?(.*)/)){flush();end();out.push(`<div class="rounded-xl border border-amber-500/30 bg-amber-950/10 p-3 text-xs text-amber-200">${inl(m[1])}</div>`);return}
+    if(m=l.match(/^[-*]\s+(.*)/)){flush();if(list!=='ul'){end();out.push('<ul class="list-disc space-y-1 pl-5">');list='ul'}out.push(`<li>${inl(m[1])}</li>`);return}
+    if(m=l.match(/^\d+\.\s+(.*)/)){flush();if(list!=='ol'){end();out.push('<ol class="list-decimal space-y-1 pl-5">');list='ol'}out.push(`<li>${inl(m[1])}</li>`);return}
+    end();para.push(l);
+  });
+  flush();end();return out.join('');
+}
+async function showGuide(k){
+  const my=++gTok;k=GALIAS[k]||k||'';
+  const gs=await loadGuides();if(my!==gTok)return;
+  const g=gs.find(x=>x.slug===k&&!x.soon),show=(id,on)=>$(id).classList.toggle('hidden',!on);
+  show('g-home',!g);show('g-back',!!g);show('g-meta',!!g);show('g-doc',!!g&&g.slug!=='glossary');show('g-inv',!!g&&g.slug==='glossary');
+  if(!g){
+    $('g-home').innerHTML=gs.map(x=>tile('#guide/'+x.slug,x.ic,esc(x.name),x.soon)).join('')+(gs.offline?'<p class="col-span-full text-xs text-amber-300">โหลดรายการคู่มือไม่สำเร็จ แสดงเฉพาะรายการสำรอง ลองรีเฟรชหน้านี้อีกครั้ง</p>':'');
+    return;
+  }
+  $('g-meta').innerHTML=`<h3 class="text-lg font-bold text-white">${g.ic} ${esc(g.name)}</h3><div class="flex flex-wrap items-center gap-2 text-xs">${g.type?`<span class="rounded-full px-2 py-0.5 ${TYPE_STYLE[g.type]||'bg-slate-700 text-slate-200'}">${esc(g.type)}</span>`:''}${g.upd?`<span class="text-slate-500">อัปเดต ${esc(g.upd)}</span>`:''}</div>`;
+  if(g.slug==='glossary'){await loadGloss();if(my===gTok)renderGloss();return}
+  $('g-doc').innerHTML='<p class="text-slate-400">กำลังโหลด...</p>';
+  try{const t=docCache[g.slug]||(docCache[g.slug]=await getTxt(g.slug+'.txt'));if(my===gTok)$('g-doc').innerHTML=md(t)}
+  catch(e){delete docCache[g.slug];if(my===gTok)$('g-doc').innerHTML='<p class="text-amber-300">โหลดเนื้อหานี้ไม่สำเร็จในตอนนี้ ลองรีเฟรชหน้านี้อีกครั้ง</p>'}
+}
 function renderGloss(){
+  if(!GLOSS.length){if(!GLOSS.err)$('gloss').innerHTML='<p class="py-6 text-center text-slate-400">ยังไม่มีคำศัพท์</p>';return}
   const q=$('gq').value.trim().toLowerCase(),L=GLOSS.filter(g=>!q||(g[0]+g[1]).toLowerCase().includes(q));
-  $('gloss').innerHTML=L.map(g=>`<div class="rounded-xl border border-slate-800 bg-slate-900/60 p-3"><b class="text-emerald-300">${g[0]}</b><p class="mt-1 text-[13px]">${g[1]}</p></div>`).join('')||'<p class="py-6 text-center text-slate-400">ไม่พบคำศัพท์นี้</p>';
+  $('gloss').innerHTML=L.map(g=>`<div class="rounded-xl border border-slate-800 bg-slate-900/60 p-3"><b class="text-emerald-300">${esc(g[0])}</b><p class="mt-1 text-[13px]">${esc(g[1])}</p></div>`).join('')||'<p class="py-6 text-center text-slate-400">ไม่พบคำศัพท์นี้</p>';
 }
 
 
