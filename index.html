@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>NexDR V8.8.1 — เครื่องมือเช็คราคา DR | By. NakinMuni</title>
+<title>NexDR V8.9 — เครื่องมือเช็คราคา DR | By. NakinMuni</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -47,19 +47,20 @@
 
 <main class="mx-auto max-w-6xl px-4 py-5">
   <div id="toast" class="fixed left-1/2 top-16 z-50 hidden w-[92vw] max-w-md -translate-x-1/2 text-center leading-relaxed rounded-xl border border-emerald-500/40 bg-emerald-950 px-4 py-2 text-sm text-emerald-200 shadow-xl"></div>
+  <div id="verWarn" class="mb-3 hidden rounded-xl border border-amber-500/40 bg-amber-950/30 px-3 py-2 text-xs text-amber-200"></div>
   <div id="loading" class="py-20 text-center text-slate-400"><div class="mx-auto mb-3 h-8 w-8 animate-spin rounded-full border-2 border-emerald-500 border-t-transparent"></div>กำลังโหลดกระดาน...</div>
   <div id="error" class="hidden rounded-2xl border border-rose-500/30 bg-rose-950/20 p-6 text-center"><p class="font-semibold text-rose-400">เชื่อมต่อข้อมูลไม่ได้ในตอนนี้</p><p id="errMsg" class="mt-1 text-xs text-slate-400"></p><button onclick="loadData(false)" class="mt-3 rounded-lg bg-rose-500/20 px-4 py-2 text-sm text-rose-300">ลองใหม่</button></div>
 
   <!-- ===== หน้า 1: กระดานหลัก ===== -->
   <section id="p-home" class="page space-y-5">
+    <div id="bkWarn" class="hidden rounded-xl border border-sky-500/30 bg-sky-950/20 px-3 py-2 text-xs text-sky-200"></div>
     <div id="welcome" class="hidden rounded-2xl border border-emerald-500/30 bg-emerald-950/20 p-4 text-sm">
       <div class="flex justify-between gap-2"><b class="text-emerald-300">👋 มือใหม่? เริ่มตรงนี้ 3 ขั้นตอน</b><button onclick="closeWelcome()" class="text-slate-400">✕</button></div>
-      <ol class="mt-2 list-decimal space-y-1 pl-5 text-slate-300"><li>เลื่อนดูหุ้นด้านล่าง ตัวที่ติดป้าย <b class="text-emerald-400">🟢 น่าสะสม</b> คือราคาบนกระดานไทยถูกกว่าราคาที่ควรเป็น</li><li>กดดาว ☆ ที่หุ้นที่สนใจ (เลือกแค่ไม่กี่ตัวที่อยากตามจริงๆ)</li><li>ไปหน้า <b>⭐ เริ่มวิเคราะห์</b> เพื่ออัปเดตราคาสดเฉพาะตัวที่ติดดาว</li></ol>
+      <ol class="mt-2 list-decimal space-y-1 pl-5 text-slate-300"><li>เลื่อนดูหุ้นด้านล่าง ตัวที่ติดป้าย <b class="text-emerald-400">🟢 ถูกกว่า Fair Value</b> คือราคาบนกระดานไทยต่ำกว่าราคาที่ควรเป็นตามหุ้นแม่ (เป็นข้อมูลเปรียบเทียบ ไม่ใช่คำแนะนำให้ซื้อ)</li><li>กดดาว ☆ ที่หุ้นที่สนใจ (เลือกแค่ไม่กี่ตัวที่อยากตามจริงๆ)</li><li>ไปหน้า <b>⭐ เริ่มวิเคราะห์</b> เพื่ออัปเดตราคาสดเฉพาะตัวที่ติดดาว</li></ol>
       <a href="#guide" class="mt-2 inline-block text-xs text-emerald-400 underline">อ่านคู่มือฉบับเข้าใจง่าย →</a>
     </div>
     <div><h2 class="text-xl font-bold">🌍 ภาพรวมตลาดโลก</h2><p id="hMkt" class="mt-1 text-xs text-slate-400"></p></div>
     <div id="mkGrid" class="grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-4"><p class="col-span-full py-4 text-sm text-slate-400">กำลังโหลดตัวชี้วัด...</p></div>
-    <div id="mkDetail" class="hidden rounded-2xl border border-slate-700 bg-slate-900/70 p-4 text-sm leading-relaxed"></div>
     <p id="mkNote" class="text-[11px] leading-relaxed text-slate-500"></p>
     <div class="space-y-2 pt-1"><h3 class="font-bold">📈 ดัชนีตลาดหุ้นโลก</h3>
       <div id="idxGrid" class="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5"><p class="col-span-full py-4 text-sm text-slate-400">กำลังโหลดดัชนี...</p></div>
@@ -76,7 +77,7 @@
   <section id="p-board" class="page space-y-4">
     <div class="grid grid-cols-3 gap-2.5 text-center">
       <div class="rounded-xl border border-slate-800 bg-slate-900/70 p-3"><p class="text-[11px] text-slate-400">DR ทั้งหมด</p><p id="kTotal" class="text-xl font-bold num">-</p></div>
-      <div class="rounded-xl border border-emerald-500/25 bg-emerald-950/20 p-3"><p class="text-[11px] text-emerald-400">🟢 น่าสะสม</p><p id="kDisc" class="text-xl font-bold text-emerald-400 num">-</p></div>
+      <div class="rounded-xl border border-emerald-500/25 bg-emerald-950/20 p-3"><p class="text-[11px] text-emerald-400">🟢 ถูกกว่า Fair</p><p id="kDisc" class="text-xl font-bold text-emerald-400 num">-</p></div>
       <div class="rounded-xl border border-amber-500/25 bg-amber-950/10 p-3"><p class="text-[11px] text-amber-400">⭐ ติดดาว</p><p id="kStar" class="text-xl font-bold text-amber-400 num">0</p></div>
     </div>
 
@@ -84,9 +85,9 @@
       <input id="q" oninput="resetPage();renderBoard()" class="inp" placeholder="🔍 ค้นหา เช่น AAPL80, Apple, เทคโนโลยี" />
       <div class="flex gap-2 overflow-x-auto pb-1">
         <button class="chip on" data-zone="ALL" onclick="setZone('ALL')">ทั้งหมด</button>
-        <button class="chip" data-zone="DISCOUNT" onclick="setZone('DISCOUNT')">🟢 น่าสะสม</button>
-        <button class="chip" data-zone="FAIR" onclick="setZone('FAIR')">⚪ เหมาะสม</button>
-        <button class="chip" data-zone="PREMIUM" onclick="setZone('PREMIUM')">🔴 แพงกว่าแม่</button>
+        <button class="chip" data-zone="DISCOUNT" onclick="setZone('DISCOUNT')">🟢 ถูกกว่า Fair</button>
+        <button class="chip" data-zone="FAIR" onclick="setZone('FAIR')">⚪ ใกล้ Fair</button>
+        <button class="chip" data-zone="PREMIUM" onclick="setZone('PREMIUM')">🔴 แพงกว่า Fair</button>
         <button class="chip" data-zone="STAR" onclick="setZone('STAR')">⭐ ติดดาว</button>
       </div>
       <details class="rounded-xl border border-slate-800 bg-slate-900/50">
@@ -143,9 +144,18 @@
       <input id="gq" oninput="renderGloss()" class="inp" placeholder="🔍 ค้นหาคำศัพท์ เช่น ปันผล, DCA, P/E" />
       <div id="gloss" class="space-y-2"></div>
     </div>
-    <p class="pt-4 text-center text-xs text-slate-500">NexDR V8.8.1 • Designed & Engineered By. NakinMuni</p>
+    <p class="pt-4 text-center text-xs text-slate-500">NexDR V8.9 • Designed & Engineered By. NakinMuni</p>
   </section>
 </main>
+<p class="mx-auto max-w-6xl px-4 pb-8 pt-2 text-center text-[11px] leading-relaxed text-slate-500">ข้อมูลเพื่อการศึกษาและประกอบการตัดสินใจ ไม่ใช่คำแนะนำลงทุน การลงทุนมีความเสี่ยง อาจขาดทุนเงินต้น ราคาอาจล่าช้าหรือคลาดเคลื่อน โปรดตรวจสอบกับโบรกเกอร์ก่อนตัดสินใจ</p>
+
+<!-- Popup: ตัวชี้วัดตลาด -->
+<div id="mkModal" class="fixed inset-0 z-50 hidden items-end justify-center bg-slate-950/85 backdrop-blur-sm sm:items-center sm:p-4" onclick="if(event.target===this)mkClose()">
+  <div class="max-h-[85vh] w-full max-w-md overflow-y-auto rounded-t-2xl border border-slate-700 bg-slate-900 p-5 sm:rounded-2xl" style="padding-bottom:calc(1.25rem + env(safe-area-inset-bottom))">
+    <div class="flex items-start justify-between gap-2"><h3 id="mkTitle" class="text-lg font-bold"></h3><button onclick="mkClose()" class="-m-2 p-2 text-slate-400" aria-label="ปิด">✕</button></div>
+    <div id="mkBody" class="mt-2 space-y-2 text-sm leading-relaxed"></div>
+  </div>
+</div>
 
 <!-- Modal: เครื่องคิดเลข + แผนส่วนตัว -->
 <div id="modal" class="fixed inset-0 z-50 hidden items-end justify-center bg-slate-950/85 backdrop-blur-sm sm:items-center sm:p-4" onclick="if(event.target===this)closeModal()">
@@ -156,10 +166,11 @@
     </div>
     <div class="space-y-4 overflow-y-auto px-5 py-4 text-sm" style="padding-bottom:calc(1rem + env(safe-area-inset-bottom))">
       <div class="grid grid-cols-3 gap-2 rounded-xl bg-slate-950 p-3 text-center">
-        <div><p class="text-[11px] text-emerald-400">โซนตั้งรับ</p><p id="mBuy" class="font-bold text-emerald-400 num"></p></div>
+        <div><p class="text-[11px] text-emerald-400">ต่ำกว่า Fair 1 ช่วง</p><p id="mBuy" class="font-bold text-emerald-400 num"></p></div>
         <div class="border-x border-slate-800"><p class="text-[11px] text-slate-400">Fair Value</p><p id="mFair" class="font-bold num"></p></div>
         <div><p class="text-[11px] text-slate-400">ราคา SET</p><p id="mSet" class="font-bold num"></p></div>
       </div>
+      <div id="mFresh" class="rounded-xl border border-slate-800 p-3 text-xs"></div>
       <div id="mHist" class="rounded-xl border border-slate-800 p-3"></div>
       <div class="space-y-3 rounded-xl border border-slate-800 p-3">
         <b>🧮 ซื้อได้กี่หน่วย?</b>
@@ -207,7 +218,7 @@ window.addEventListener('hashchange',route);
 // ---------- สถานะ/คำนวณ ----------
 function zoneOf(i){const s=+i.setPrice||0,f=+i.fairPrice||0,b=+i.buyTarget||0;if(s<=0||f<=0)return 'PENDING';if(s<=b)return 'DISCOUNT';if(s<=f)return 'FAIR';return 'PREMIUM'}
 function hit(i){const s=+i.setPrice||0,t=+getMeta(i.drSymbol).targetPrice||0;return s>0&&t>0&&s<=t}
-const TAG={DISCOUNT:['🟢 น่าสะสม','border-emerald-500/40 bg-emerald-500/20 text-emerald-300'],FAIR:['⚪ เหมาะสม','border-slate-600 bg-slate-800 text-slate-200'],PREMIUM:['🔴 แพงกว่าแม่','border-rose-500/40 bg-rose-500/15 text-rose-300'],PENDING:['รอราคา','border-slate-700 bg-slate-800 text-slate-400']};
+const TAG={DISCOUNT:['🟢 ถูกกว่า Fair','border-emerald-500/40 bg-emerald-500/20 text-emerald-300'],FAIR:['⚪ ใกล้ Fair','border-slate-600 bg-slate-800 text-slate-200'],PREMIUM:['🔴 แพงกว่า Fair','border-rose-500/40 bg-rose-500/15 text-rose-300'],PENDING:['รอราคา','border-slate-700 bg-slate-800 text-slate-400']};
 function card(i){
   const z=zoneOf(i),m=getMeta(i.drSymbol),h=hit(i),on=wl.has(i.drSymbol),chg=+i.parentChangePct||0,pp=+i.parentPrice||0;
   const tag=h?['🎯 ถึงเป้าแล้ว','border-amber-400/60 bg-amber-500/25 text-amber-200']:TAG[z];
@@ -219,13 +230,13 @@ function card(i){
         <div><b class="text-base">${esc(i.drSymbol)}</b><p class="text-[11px] text-slate-400">${esc(i.parentTicker)} • ${esc(i.market)}</p></div></div>
       <span class="shrink-0 rounded-full border px-2.5 py-1 text-[11px] font-semibold ${tag[1]}">${tag[0]}</span></div>
     <div class="mt-3 grid grid-cols-3 gap-1 rounded-xl bg-slate-950/80 p-2.5 text-center num">
-      <div><p class="text-[10px] text-emerald-400">ตั้งรับ</p><p class="font-bold text-emerald-400">${(+i.buyTarget>0?'≤ ':'')+fmt(i.buyTarget,i.tickSize)}</p></div>
+      <div><p class="text-[10px] text-emerald-400">ต่ำกว่า Fair</p><p class="font-bold text-emerald-400">${(+i.buyTarget>0?'≤ ':'')+fmt(i.buyTarget,i.tickSize)}</p></div>
       <div class="border-x border-slate-800"><p class="text-[10px] text-slate-400">Fair Value</p><p class="font-bold">${fmt(i.fairPrice,i.tickSize)}</p></div>
       <div><p class="text-[10px] text-slate-400">ราคา SET</p><p class="font-bold">${fmt(i.setPrice,i.tickSize)}</p></div></div>
     <div class="mt-2.5 flex flex-wrap items-center justify-between gap-1 text-xs text-slate-400">
       <span>แม่ ${pp>0?pp.toFixed(2):'-'} ${esc(i.currency)} ${pp>0?`<span class="${chg>=0?'text-emerald-400':'text-rose-400'}">(${chg>=0?'+':''}${chg.toFixed(2)}%)</span>`:''}</span>
       <span>ส่วนต่าง ${d==null?'-':`<b class="num ${d<0?'text-emerald-400':d>0?'text-rose-400':''}">${d>0?'+':''}${d.toFixed(2)}%</b>`}</span></div>
-    ${tline(i)}${(m.bucket||m.targetPrice||m.note)?`<div class="mt-2 flex flex-wrap gap-1.5 text-[11px]">${m.bucket?`<span class="rounded bg-slate-800 px-1.5 py-0.5">${BUCKETS[m.bucket][0]} ${BUCKETS[m.bucket][1]}</span>`:''}${m.targetPrice?`<span class="rounded bg-amber-500/15 px-1.5 py-0.5 text-amber-300">🎯 ≤ ${fmt(m.targetPrice,i.tickSize)}</span>`:''}${m.note?`<span class="truncate rounded bg-slate-800 px-1.5 py-0.5 text-slate-300">📝 ${esc(m.note)}</span>`:''}</div>`:''}
+    ${chips(i)}${tline(i)}${(m.bucket||m.targetPrice||m.note)?`<div class="mt-2 flex flex-wrap gap-1.5 text-[11px]">${m.bucket?`<span class="rounded bg-slate-800 px-1.5 py-0.5">${BUCKETS[m.bucket][0]} ${BUCKETS[m.bucket][1]}</span>`:''}${m.targetPrice?`<span class="rounded bg-amber-500/15 px-1.5 py-0.5 text-amber-300">🎯 ≤ ${fmt(m.targetPrice,i.tickSize)}</span>`:''}${m.note?`<span class="truncate rounded bg-slate-800 px-1.5 py-0.5 text-slate-300">📝 ${esc(m.note)}</span>`:''}</div>`:''}
   </div>`;
 }
 
@@ -270,7 +281,7 @@ function toggleStar(e,s){
   if(e)e.stopPropagation(); wl.has(s)?wl.delete(s):wl.add(s);
   localStorage.setItem(WL_KEY,JSON.stringify([...wl])); refreshAll();
 }
-function refreshAll(){kpis();renderBoard();renderAnalyze();renderHome()}
+function refreshAll(){kpis();renderBoard();renderAnalyze();renderHome();backupReminder()}
 function liveRefresh(){
   const left=Math.ceil(LIVE_COOLDOWN-(Date.now()-lastLive)/1000);
   if(left>0)return toast(`รอ ${left} วินาที ค่อยกดอัปเดตอีกครั้งนะ (ช่วยประหยัดโควตา)`);
@@ -279,7 +290,7 @@ function liveRefresh(){
 
 // ---------- โหลดข้อมูล ----------
 function applyPayload(res,fromLocal){
-  items=res.items||[]; $('loading').classList.add('hidden'); $('error').classList.add('hidden');
+  items=res.items||[]; cfgMain=res.cfg||cfgMain; if(!fromLocal){const bad=res.v!==NEED_BACKEND,vw=$('verWarn');vw.classList.toggle('hidden',!bad);if(bad)vw.textContent='⚠️ ฝั่งหลังบ้านยังเป็นเวอร์ชันเก่า'+(res.v?' ('+res.v+')':'')+' ป้ายสถานะและเวลาของราคาอาจยังไม่แสดง เจ้าของโปรเจกต์ควร deploy Code.gs ล่าสุด'} $('loading').classList.add('hidden'); $('error').classList.add('hidden');
   const live=res.syncMode==='STARRED_LIVE';
   if(!fromLocal)renderQuota(res.quota); fullMs=res.fullSyncMs||0; const fresh=fullMs&&Date.now()-fullMs<43200000;
   $('status').innerHTML=`<span class="inline-block h-2 w-2 rounded-full ${fresh?'bg-emerald-400':'bg-amber-400'}"></span> ${fullMs?'ราคากระดาน: '+fmtT(fullMs):'ข้อมูลล่าสุด '+esc(res.updatedAt||'')}`;
@@ -292,7 +303,7 @@ function loadData(live){
   const btn=$('liveBtn'); btn.disabled=true; btn.textContent='⏳ กำลังดึง...';
   const stars=[...wl]; const url=live?`${GAS_API_URL}?refresh=1${stars.length?'&stars='+encodeURIComponent(stars.join(',')):''}`:GAS_API_URL;
   fetch(url,{credentials:'omit'}).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json()})
-  .then(res=>{if(res.error)throw new Error('เซิร์ฟเวอร์ขัดข้องชั่วคราว');applyPayload(res,false);if(live)toast(res.quotaLimited?'โควตาดึงราคาสดของวันนี้ใกล้เต็ม แสดงราคาล่าสุดที่มีแทน':res.syncMode==='STARRED_LIVE'?`⚡ อัปเดตราคาสด ${res.syncedStarCount} ตัวแล้ว`:'ยังไม่มีตัวติดดาว ใช้ข้อมูลล่าสุดแทน')})
+  .then(res=>{if(res.error)throw new Error('เซิร์ฟเวอร์ขัดข้องชั่วคราว');applyPayload(res,false);if(live)toast(res.quotaLimited?'โควตาดึงสดช่วงนี้ใกล้เต็ม (จำกัดทั้งรายชั่วโมงและรายวัน) แสดงราคาล่าสุดที่มีแทน':res.syncMode==='STARRED_LIVE'?`⚡ อัปเดตราคาสด ${res.syncedStarCount} ตัวแล้ว`:'ยังไม่มีตัวติดดาว ใช้ข้อมูลล่าสุดแทน')})
   .catch(err=>{$('loading').classList.add('hidden');if(!items.length){$('error').classList.remove('hidden');$('errMsg').textContent=err.message}else toast('เชื่อมต่อไม่สำเร็จ แสดงข้อมูลล่าสุดที่มี')})
   .finally(()=>{btn.disabled=false;btn.textContent='⚡ อัปเดตราคาสด'});
 }
@@ -303,7 +314,7 @@ function openModal(s){
   $('mTitle').textContent=s; $('mSub').textContent=`${cur.parentTicker} • ${cur.market} • Ratio ${cur.ratioText} • Tick ${t.toFixed(2)} ฿`;
   $('mBuy').textContent=cur.buyTarget>0?'≤ '+fmt(cur.buyTarget,t):'-'; $('mFair').textContent=fmt(cur.fairPrice,t); $('mSet').textContent=st>0?fmt(st,t):'รอราคา';
   $('mBid').value=st||cur.buyTarget||cur.fairPrice||''; $('mBid').step=t; $('mHH').checked=happyNow();
-  loadHist(s,st>0&&cur.diffPct!=null?Number(cur.diffPct):null); $('mTarget').value=m.targetPrice||''; $('mNote').value=m.note||''; pickBucket(m.bucket||''); calc();
+  $('mFresh').innerHTML=freshHtml(cur); loadHist(s,st>0&&cur.diffPct!=null?Number(cur.diffPct):null); $('mTarget').value=m.targetPrice||''; $('mNote').value=m.note||''; pickBucket(m.bucket||''); calc();
   $('modal').classList.remove('hidden'); $('modal').classList.add('flex'); document.body.style.overflow='hidden';
 }
 function closeModal(){$('modal').classList.add('hidden');$('modal').classList.remove('flex');document.body.style.overflow=''}
@@ -314,7 +325,7 @@ function calc(){
   const fee=$('mHH').checked?0:0.00157, u=Math.floor(bud/(1+fee)/bid), spent=u*bid*(1+fee);
   const d=fv>0?(bid-fv)/fv*100:null;
   r.innerHTML=`ซื้อได้ <b class="text-base text-emerald-400">${u.toLocaleString()} หน่วย</b> <span class="text-slate-400">(${Math.floor(u/100)} Lot + เศษ ${u%100} • เหลือเงิน ${Math.max(0,bud-spent).toFixed(0)} ฿)</span><br>`+
-   `ราคา 1 Lot (100 หน่วย) = ${(bid*100).toLocaleString('en-US',{minimumFractionDigits:2})} ฿`+(d==null?'':`<br>เทียบ Fair Value: <b class="${d<=0?'text-emerald-400':'text-rose-400'}">${d>0?'+':''}${d.toFixed(2)}% (${d<=0?'ถูกกว่าแม่':'แพงกว่าแม่'})</b>`);
+   `ราคา 1 Lot (100 หน่วย) = ${(bid*100).toLocaleString('en-US',{minimumFractionDigits:2})} ฿`+(d==null?'':`<br>เทียบ Fair Value: <b class="${d<=0?'text-emerald-400':'text-rose-400'}">${d>0?'+':''}${d.toFixed(2)}% (${d<=0?'ถูกกว่า Fair Value':'แพงกว่า Fair Value'})</b>`);
 }
 function saveMeta(){
   if(!cur)return; const s=cur.drSymbol,t=parseFloat($('mTarget').value);
@@ -337,7 +348,7 @@ function marketNow(){
 // ---------- สำรอง/กู้คืน ----------
 function exportData(){
   const b=new Blob([JSON.stringify({app:'NexDR',exportedAt:new Date().toISOString(),watchlist:[...wl],userMeta:meta},null,2)],{type:'application/json'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=`NexDR_Backup_${new Date().toISOString().slice(0,10)}.json`;a.click();toast('⬇️ ดาวน์โหลดไฟล์สำรองแล้ว');
+  const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=`NexDR_Backup_${new Date().toISOString().slice(0,10)}.json`;a.click();localStorage.setItem(BK_KEY,String(Date.now()));backupReminder();toast('⬇️ ดาวน์โหลดไฟล์สำรองแล้ว');
 }
 function importData(e){
   const f=e.target.files[0];if(!f)return;const r=new FileReader();
@@ -586,10 +597,6 @@ const VZ=[
 ];
 const lvOf=(id,l)=>id==='vix'?[VZ[l].ic+' '+VZ[l].n,VZ[l].c]:LV[l];
 const vixZ=cfg=>[cfg.vix_z1||20,cfg.vix_z2||30,cfg.vix_z3||40,cfg.vix_z4||50,cfg.vix_z5||60];
-function vixLadder(l,cfg){
-  const z=vixZ(cfg),R=['ต่ำกว่า '+z[0],z[0]+'–'+z[1],z[1]+'–'+z[2],z[2]+'–'+z[3],z[3]+'–'+z[4],z[4]+' ขึ้นไป'];
-  return `<div class="mt-3 space-y-1">${VZ.map((x,i)=>`<div class="flex gap-2 rounded-lg px-2 py-1.5 ${i===l?'bg-slate-800 ring-1 ring-emerald-400':''}"><span>${x.ic}</span><div><b class="${x.c}">VIX ${R[i]} • ${x.n}</b><p class="text-[12px] leading-snug text-slate-400">${x.t}</p></div></div>`).join('')}</div><p class="mt-2 text-[11px] leading-relaxed text-amber-200/90">⚠️ เกณฑ์นี้เป็นแนวทางส่วนตัวที่นักลงทุนบางกลุ่มใช้อ้างอิง ไม่ใช่งานวิจัย ไม่ใช่คำแนะนำลงทุน และไม่มีการรับประกันผล ระดับ VIX สูงมากเกิดขึ้นไม่กี่ครั้งในประวัติศาสตร์ จึงสรุปเป็นกฎตายตัวไม่ได้ เช่น ปี 2008 VIX สูงสุดช่วงปลายปี แต่ดัชนี S&P 500 ลงไปต่ำสุดอีกครั้งในเดือนมีนาคม 2009</p>`;
-}
 function mkLevel(id,v,c,cfg){
   if(id==='vix'){let l=vixZ(cfg).filter(t=>v>=t).length;if(c>=cfg.vix_spike_pct)l=Math.max(l,1);return l}
   if(id==='tnx'){const bp=Math.abs((v-v/(1+c/100))*100),m=cfg.tnx_move_bp||10;return bp>=2*m?2:bp>=m?1:0}
@@ -616,17 +623,17 @@ function mkView(it){const m=MK[it.id];if(!m)return null;const cfg=mkData.cfg||{}
 function renderMarkets(){
   if(!mkData)return;
   $('mkGrid').innerHTML=mkData.items.map(it=>{const v=mkView(it);if(!v)return '';const up=it.chgPct>=0;
-   return `<button onclick="mkOpen('${it.id}')" class="rounded-2xl border ${it.id===mkSel?'border-emerald-400':'border-slate-800'} bg-slate-900/70 p-3 text-left transition active:scale-[.98]"><div class="flex items-center justify-between text-xs text-slate-400"><span>${v.m.ic} ${v.m.n}</span><span class="${v.lv[1]}">${v.lv[0]}</span></div><p class="mt-1 text-lg font-bold num">${v.m.f(it.price)}</p><p class="text-xs font-semibold num ${up?'text-emerald-400':'text-rose-400'}">${chgTxt(it)}</p>${spark(it.series||[],up)}<p class="mt-1 line-clamp-2 text-[11px] leading-snug text-slate-400">${v.note}</p></button>`}).join('');
+   return `<button onclick="mkOpen('${it.id}')" class="rounded-2xl border border-slate-800 bg-slate-900/70 p-3 text-left transition active:scale-[.98]"><div class="flex items-center justify-between text-xs text-slate-400"><span>${v.m.ic} ${v.m.n}</span><span class="${v.lv[1]}">${v.lv[0]}</span></div><p class="mt-1 text-lg font-bold num">${v.m.f(it.price)}</p><p class="text-xs font-semibold num ${up?'text-emerald-400':'text-rose-400'}">${chgTxt(it)}</p>${spark(it.series||[],up)}<p class="mt-1 line-clamp-2 text-[11px] leading-snug text-slate-400">${v.note}</p></button>`}).join('');
   $('mkNote').textContent=`🕒 ดึงเมื่อ ${fmtT(mkData.fetchedMs)}${mkData.stale?' (ดึงใหม่ไม่สำเร็จ ใช้ข้อมูลล่าสุดที่เก็บไว้)':''} • อัปเดตทุกราว 15 นาที • ข้อมูลจาก Yahoo Finance อาจล่าช้า • ข้อความเป็นข้อสังเกตเชิงให้ความรู้ ไม่ใช่คำแนะนำลงทุน`;
-  if(mkSel)mkOpen(mkSel,true);
 }
-function mkOpen(id,keep){
-  const it=mkData&&mkData.items.find(x=>x.id===id),el=$('mkDetail');if(!it)return;
-  if(mkSel===id&&!keep){mkSel='';el.classList.add('hidden');renderMarkets();return}
-  mkSel=id;const v=mkView(it);if(!keep)renderMarkets();
-  el.innerHTML=`<b>${v.m.ic} ${v.m.n}</b> <span class="${v.lv[1]} text-xs">${v.lv[0]}</span><p class="mt-2">${v.note}</p><p class="mt-2 text-slate-400">📘 ${v.m.x}</p>${id==='vix'?vixLadder(v.l,mkData.cfg||{}):''}<p class="mt-2 text-[11px] text-slate-500">ราคา ณ ${it.t?fmtT(it.t):'-'} (เวลาที่ตลาดรายงานล่าสุด) • <a href="#guide/inv" class="text-emerald-400 underline">ดูคำอธิบายศัพท์ในคู่มือ</a></p>`;
-  el.classList.remove('hidden');
+function vixBar(l){const col=['bg-emerald-500','bg-amber-400','bg-orange-500','bg-rose-500','bg-fuchsia-500','bg-slate-300'];return `<div class="flex gap-0.5">${col.map((c,i)=>`<i class="h-2 flex-1 rounded ${c} ${i===l?'':'opacity-25'}"></i>`).join('')}</div><div class="flex justify-between text-[10px] text-slate-500"><span>ปกติ</span><span>สุดโต่ง</span></div>`}
+function mkOpen(id){
+  const it=mkData&&mkData.items.find(x=>x.id===id);if(!it)return;const v=mkView(it);
+  $('mkTitle').innerHTML=`${v.m.ic} ${v.m.n} <span class="${v.lv[1]} text-xs font-normal">${v.lv[0]}</span>`;
+  $('mkBody').innerHTML=`<p class="num text-xl font-bold">${v.m.f(it.price)} <span class="text-sm ${it.chgPct>=0?'text-emerald-400':'text-rose-400'}">${chgTxt(it)}</span></p>${id==='vix'?vixBar(v.l):''}<p>${v.note}</p><p class="text-xs text-slate-400">📘 ${v.m.x}</p><p class="text-[11px] text-slate-500">ราคา ณ ${it.t?fmtT(it.t):'-'} (เวลาที่ตลาดรายงานล่าสุด)</p><a href="${id==='vix'?'#guide/vix':'#guide/glossary'}" onclick="mkClose()" class="inline-block text-sm text-emerald-400 underline">${id==='vix'?'อ่านบันไดเกณฑ์ VIX ทั้งหมดในคู่มือ →':'ดูคำอธิบายศัพท์ในคู่มือ →'}</a>`;
+  $('mkModal').classList.remove('hidden');$('mkModal').classList.add('flex');document.body.style.overflow='hidden';
 }
+function mkClose(){$('mkModal').classList.add('hidden');$('mkModal').classList.remove('flex');document.body.style.overflow=''}
 const mkOk=d=>d&&Array.isArray(d.items)&&d.items.some(x=>MK[x.id]); // ตรวจว่าเป็นข้อมูลตัวชี้วัดจริง ไม่ใช่ข้อมูลอื่น
 function loadMarkets(force){
   try{const c=JSON.parse(localStorage.getItem('nexdr_mk_v1')||'null');if(c&&!force&&mkOk(c.d)&&Date.now()-c.t<600000){mkData=c.d;renderMarkets();return}}catch(e){}
@@ -643,7 +650,7 @@ function renderQuota(q){
 }
 function quotaOpen(){
   const q=quotaData;if(!q)return;const left=Math.max(0,q.live-q.used),per=items.length*2+10,runs=Math.floor(left/per);
-  toast(`วันนี้ดึงข้อมูลไปแล้วราว ${nf(q.used)} ครั้ง จากเพดาน ${nf(q.limit)} ของบัญชี Google (ค่าประมาณ) • งบดึงสด ${nf(q.live)} เหลือ ${nf(left)} • ดึงทั้งกระดาน 1 รอบ ≈ ${nf(per)} ครั้ง ทำได้อีกราว ${nf(runs)} รอบ${q.full?' • ⚠️ Google แจ้งโควตาวันนี้เต็มแล้ว':''} • รีเซ็ตเที่ยงคืนเวลาไทย`,10000);
+  toast(`วันนี้ดึงข้อมูลไปแล้วราว ${nf(q.used)} ครั้ง จากเพดาน ${nf(q.limit)} ของบัญชี Google (ค่าประมาณ) • งบดึงสด ${nf(q.live)} เหลือ ${nf(left)} • ดึงทั้งกระดาน 1 รอบ ≈ ${nf(per)} ครั้ง ทำได้อีกราว ${nf(runs)} รอบ${q.hourLimit?` • ชั่วโมงนี้ดึงสดได้อีก ${nf(q.hourLeft)} จาก ${nf(q.hourLimit)} (จำกัดรายชั่วโมงเพื่อไม่ให้งบหมดเร็ว)`:''}${q.full?' • ⚠️ Google แจ้งโควตาวันนี้เต็มแล้ว':''} • รีเซ็ตเที่ยงคืนเวลาไทย`,10000);
 }
 
 // ---------- ดัชนีตลาดหุ้นโลก ----------
@@ -662,6 +669,34 @@ function loadIndices(force){
   fetch(GAS_API_URL+'?indices=1',{credentials:'omit'}).then(r=>r.json()).then(d=>{if(!idxOk(d)){console.warn('indices: unexpected response (Code.gs may not be the latest deployed version)');throw 0}idxData=d;try{localStorage.setItem('nexdr_idx_v1',JSON.stringify({t:Date.now(),d}))}catch(e){}renderIdx()})
   .catch(()=>{if(!idxData)$('idxGrid').innerHTML='<p class="col-span-full py-4 text-sm text-slate-400">โหลดดัชนีไม่สำเร็จในตอนนี้ ลองรีเฟรชหน้านี้อีกครั้ง</p>'});
 }
+
+// ---------- ป้ายสถานะข้อมูล / ความสดของข้อมูล ----------
+const NEED_BACKEND='V8.9';
+let cfgMain={};
+function chips(i){
+  const c=[],cf=cfgMain,f=+i.fetchedMs||0,fb=+i.fb||0;
+  if(fb)c.push('↺ ใช้ค่าสำรอง');
+  if(f&&+i.parentT&&!(fb&1)&&f-i.parentT>(cf.stale_parent_min||30)*60000)c.push('⏸ หุ้นแม่ปิด');
+  if(f&&+i.setT&&!(fb&2)&&f-i.setT>(cf.stale_set_hours||80)*3600000)c.push('⚠️ DR ไม่ได้ซื้อขายมาหลายวัน');
+  if(i.diffPct!=null&&Math.abs(i.diffPct)>(cf.check_diff_pct||15))c.push('🔍 ตรวจข้อมูล');
+  return c.length?`<div class="mt-2 flex flex-wrap gap-1">${c.map(x=>`<span class="rounded bg-amber-500/15 px-1.5 py-0.5 text-[10px] text-amber-300">${x}</span>`).join('')}</div>`:'';
+}
+function freshHtml(i){
+  const r=(l,ms)=>`<div class="flex justify-between gap-2 py-0.5"><span class="text-slate-400">${l}</span><span class="num text-right">${ms?fmtT(ms):'-'}</span></div>`,f=+i.fetchedMs||0;
+  const head='<b class="text-sm">🕒 ความสดของข้อมูล</b>';
+  if(!f&&!+i.parentT&&!+i.setT)return head+'<p class="mt-1 text-slate-400">เวลาของแต่ละราคาจะแสดงหลังรอบอัปเดตอัตโนมัติถัดไป</p>';
+  return head+`<div class="mt-1">${r('ราคาหุ้นแม่ '+esc(i.parentTicker),+i.parentT)}${r('ราคา DR บน SET',+i.setT)}${i.currency!=='THB'?r('ค่าเงิน '+esc(i.currency)+'/THB',+i.fxT):''}${r('ดึงข้อมูลเมื่อ',f)}</div>${chips(i)}<p class="mt-1 text-[11px] leading-relaxed text-slate-500">เวลาที่ตลาดรายงานราคาล่าสุด ถ้าตลาดนั้นปิดอยู่ ราคาจะค้างที่ราคาปิดและส่วนต่างอาจไม่ตรงกับราคา ณ ตอนนี้ ควรตรวจกับโบรกเกอร์ก่อนตัดสินใจ</p>`;
+}
+// ---------- ที่เก็บข้อมูลส่วนตัว: ขอเก็บถาวร + เตือนสำรอง ----------
+const BK_KEY='nexdr_last_backup_v1';
+try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist().catch(()=>{})}catch(e){}
+function backupReminder(){
+  const el=$('bkWarn');if(!el)return;
+  if(!(wl.size||Object.keys(meta).length)){el.classList.add('hidden');return}
+  const last=+localStorage.getItem(BK_KEY)||0,days=last?(Date.now()-last)/864e5:null;
+  if(days===null||days>30){el.classList.remove('hidden');el.innerHTML=`💾 ${days===null?'ยังไม่เคยสำรองข้อมูล':'สำรองล่าสุดเมื่อ '+Math.floor(days)+' วันก่อน'} ดาวและโน้ตของคุณเก็บในเบราว์เซอร์เครื่องนี้เท่านั้น <button onclick="exportData()" class="ml-1 text-emerald-300 underline">ดาวน์โหลดไฟล์สำรองตอนนี้</button>`}else el.classList.add('hidden');
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){mkClose();closeModal()}});
 
 window.addEventListener('DOMContentLoaded',()=>{
   route(); loadNews(); loadMarkets(); loadIndices(); setInterval(()=>{if(!document.hidden&&(location.hash===''||location.hash==='#home')){loadMarkets(true);loadIndices(true)}},900000); if(!localStorage.getItem(WEL_KEY))$('welcome').classList.remove('hidden');
