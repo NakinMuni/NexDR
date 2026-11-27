@@ -29,12 +29,12 @@ DR (Depositary Receipt) คือใบรับฝากที่ซื้อ�
 
 ```
 Fair Value  =  ราคาหุ้นแม่  ×  อัตราแลกเปลี่ยน (เป็นบาท)  ÷  Ratio
-โซนตั้งรับ   =  Fair Value ลบ 1 ช่วงราคา (Tick Size)
+ต่ำกว่า Fair 1 ช่วง =  Fair Value ลบ 1 ช่วงราคา (Tick Size)
 ```
 
-- 🟢 **น่าสะสม** – ราคา SET ต่ำกว่าหรือเท่าโซนตั้งรับ
-- ⚪ **เหมาะสม** – ใกล้เคียง Fair Value
-- 🔴 **แพงกว่าแม่** – แพงกว่าราคาที่ควรเป็น
+- 🟢 **ถูกกว่า Fair Value** – ราคา SET ต่ำกว่าหรือเท่าระดับ "ต่ำกว่า Fair 1 ช่วง"
+- ⚪ **ใกล้ Fair Value** – ใกล้เคียง Fair Value
+- 🔴 **แพงกว่า Fair Value** – แพงกว่าราคาที่ควรเป็น
 
 เป็นเครื่องมือช่วยเทียบราคาเท่านั้น ไม่ได้บอกว่าหุ้นตัวนั้นดีหรือควรซื้อ
 
@@ -92,7 +92,7 @@ NexDR ไม่ต้องมีเซิร์ฟเวอร์ของต�
 
 ```
 index.html   หน้าเว็บทั้งหมด (HTML + Tailwind CDN + JavaScript)
-Code.gs      โค้ดฝั่ง Google Apps Script (ดึงราคา แคช ข่าว)
+backend/Code.gs   สำเนาโค้ดฝั่ง Google Apps Script (ดึงราคา แคช ข่าว อีเมลเตือน) เก็บไว้สำรอง รันบน GitHub ไม่ได้ ต้องวางใน Apps Script
 content/     เนื้อหาคู่มือ (แยกจากโค้ด แก้ได้โดยไม่ต้องแตะ index.html)
   index.txt      รายการคู่มือที่แสดงเป็นการ์ด
   glossary.txt   คลังศัพท์ (บรรทัดละคำ: ศัพท์ | ความหมาย)
@@ -133,3 +133,4 @@ Designed & Engineered by **NakinMuni**
 It runs without a server of its own: a static `index.html` on GitHub Pages, a Google Apps Script backend (`Code.gs`) that fetches quotes and caches them in a Google Sheet, and a Sheet that lists the DRs. See the Thai setup guide above; the sheet columns are `DR | Ratio | Market | Parent ticker (Yahoo format) | Currency | Sectors`.
 
 Educational use only. Not investment advice. Quotes come from an unofficial Yahoo Finance endpoint and may be delayed or inaccurate.
+
